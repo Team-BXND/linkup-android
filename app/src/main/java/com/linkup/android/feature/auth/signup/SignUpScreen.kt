@@ -5,11 +5,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.linkup.android.R
+import com.linkup.android.feature.auth.PasswordValidator
 import com.linkup.android.root.NavGroup
 import com.linkup.android.ui.components.CustomButton
 import com.linkup.android.ui.components.CustomTextField
@@ -32,29 +33,40 @@ fun isValidEmail(email: String): Boolean {
     return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
 }
 
-fun isValidPassword(pw: String): Boolean {
-    val regex =
-        Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@\$!%*?&])[A-Za-z\\d@\$!%*?&]{8,}$")
-    return regex.matches(pw)
-}
-
 @Composable
 fun SignUpScreen(navController: NavController) {
+    var isPwCheckTouched by remember { mutableStateOf(false) }
+
     var email by remember { mutableStateOf("") }
     var nickName by remember { mutableStateOf("") }
     var pw by remember { mutableStateOf("") }
     var pwCheck by remember { mutableStateOf("") }
 
     // error
-    var isEmailError by remember { mutableStateOf(false) }
+    val isEmailError by remember {
+        derivedStateOf {
+            email.isNotEmpty() && !isValidEmail(email)
+        }
+    }
     var isNickNameError by remember { mutableStateOf(false) }
-    var isPwError by remember { mutableStateOf(false) }
-    var isPwCheckError by remember { mutableStateOf(false) }
+    val isPwError by remember {
+        derivedStateOf {
+            pw.isNotEmpty() && !PasswordValidator.isValidPassword(pw)
+        }
+    }
+
+    val isPwCheckError by remember {
+        derivedStateOf {
+            isPwCheckTouched &&
+                    pwCheck.isNotEmpty() &&
+                    !isPwError &&
+                    pw != pwCheck
+        }
+    }
+
 
     val isSignUpEnabled =
         email.isNotEmpty() && nickName.isNotEmpty() && pw.isNotEmpty() && pwCheck.isNotEmpty() && !isEmailError && !isNickNameError && !isPwError && !isPwCheckError
-
-
 
     Column(
         modifier = Modifier
@@ -89,7 +101,6 @@ fun SignUpScreen(navController: NavController) {
                 value = email,
                 onValueChange = {
                     email = it
-                    isEmailError = email.isNotEmpty() && !isValidEmail(email)
                 }, placeHolder = "이메일을 입력하세요."
             )
 
@@ -118,7 +129,7 @@ fun SignUpScreen(navController: NavController) {
                 value = pw,
                 onValueChange = {
                     pw = it
-                    isPwError = pw.isNotEmpty() && !isValidPassword(pw)
+                    isPwCheckTouched = false
                 }, placeHolder = "비밀번호를 입력하세요."
             )
 
@@ -135,9 +146,7 @@ fun SignUpScreen(navController: NavController) {
                 value = pwCheck,
                 onValueChange = {
                     pwCheck = it
-                    isPwError = pw.isNotEmpty() && !isValidPassword(pw)
-                    isPwCheckError = pwCheck.isNotEmpty() && pw != pwCheck
-
+                    isPwCheckTouched = true
                 }, placeHolder = "비밀번호를 다시 입력하세요."
             )
 
