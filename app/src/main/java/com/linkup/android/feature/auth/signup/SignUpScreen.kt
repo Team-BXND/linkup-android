@@ -1,2 +1,178 @@
 package com.linkup.android.feature.auth.signup
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.linkup.android.R
+import com.linkup.android.root.NavGroup
+import com.linkup.android.ui.components.CustomButton
+import com.linkup.android.ui.components.CustomTextField
+import com.linkup.android.ui.theme.SubColor
+
+fun isValidEmail(email: String): Boolean {
+    return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
+}
+
+fun isValidPassword(pw: String): Boolean {
+    val regex =
+        Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@\$!%*?&])[A-Za-z\\d@\$!%*?&]{8,}$")
+    return regex.matches(pw)
+}
+
+@Composable
+fun SignUpScreen(navController: NavController) {
+    var email by remember { mutableStateOf("") }
+    var nickName by remember { mutableStateOf("") }
+    var pw by remember { mutableStateOf("") }
+    var pwCheck by remember { mutableStateOf("") }
+
+    // error
+    var isEmailError by remember { mutableStateOf(false) }
+    var isNickNameError by remember { mutableStateOf(false) }
+    var isPwError by remember { mutableStateOf(false) }
+    var isPwCheckError by remember { mutableStateOf(false) }
+
+    val isSignUpEnabled =
+        email.isNotEmpty() && nickName.isNotEmpty() && pw.isNotEmpty() && pwCheck.isNotEmpty() && !isEmailError && !isNickNameError && !isPwError && !isPwCheckError
+
+
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)
+            .padding(horizontal = 32.5.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.logo),
+                contentDescription = "Logo",
+                modifier = Modifier
+                    .width(84.dp)
+            )
+            Text(
+                text = "회원가입",
+                fontSize = 40.sp,
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier
+            )
+        }
+
+        Column(
+            modifier = Modifier.padding(top = 64.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            CustomTextField(
+                value = email,
+                onValueChange = {
+                    email = it
+                    isEmailError = email.isNotEmpty() && !isValidEmail(email)
+                }, placeHolder = "이메일을 입력하세요."
+            )
+
+            if (isEmailError) {
+                Text(
+                    text = "이메일 형식이 맞지 않습니다.", color = Color.Red, fontSize = 14.sp
+                )
+            }
+
+            CustomTextField(
+                value = nickName,
+                onValueChange = {
+                    nickName = it
+                }, placeHolder = "닉네임을 입력하세요."
+            )
+
+
+            if (isNickNameError) {
+                Text(
+                    text = "이미 사용중인 닉네임입니다.", color = Color.Red, fontSize = 14.sp
+                )
+            }
+
+
+            CustomTextField(
+                value = pw,
+                onValueChange = {
+                    pw = it
+                    isPwError = pw.isNotEmpty() && !isValidPassword(pw)
+                }, placeHolder = "비밀번호를 입력하세요."
+            )
+
+            if (isPwError) {
+                Text(
+                    text = "비밀번호는 8자 이상의 소문자, 숫자, 특수문자로 이루어져야 합니다.",
+                    color = Color.Red,
+                    fontSize = 14.sp
+                )
+            }
+
+
+            CustomTextField(
+                value = pwCheck,
+                onValueChange = {
+                    pwCheck = it
+                    isPwError = pw.isNotEmpty() && !isValidPassword(pw)
+                    isPwCheckError = pwCheck.isNotEmpty() && pw != pwCheck
+
+                }, placeHolder = "비밀번호를 다시 입력하세요."
+            )
+
+            if (isPwCheckError) {
+                Text(
+                    text = "비밀번호가 일치하지 않습니다.", color = Color.Red, fontSize = 14.sp
+                )
+            }
+
+        }
+
+        Column(
+            modifier = Modifier.padding(top = 32.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+
+            CustomButton(
+                text = "회원가입",
+                contentColor = Color.White,
+                containerColor = SubColor,
+                border = SubColor,
+                enabled = isSignUpEnabled,
+                onClick = {
+                    // 회원가입
+                }
+            )
+
+            CustomButton(
+                text = "로그인",
+                contentColor = SubColor,
+                containerColor = Color.White,
+                border = SubColor,
+                onClick = { navController.navigate(NavGroup.SignIn) },
+                modifier = Modifier
+            )
+        }
+    }
+}
