@@ -83,14 +83,14 @@ fun ProfileScreen() {
         }
         Button(
             {},
-            Modifier.padding(bottom = 20.dp).size(330.dp,55.dp)
-                .shadow(elevation = 3.dp)
-                ,
+            shape = RoundedCornerShape(16.dp),
+            modifier = Modifier.padding(bottom = 20.dp).size(330.dp,55.dp)
+                .shadow(elevation = 3.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color.White,
                 contentColor = Color.Black
             ),
-            shape = RoundedCornerShape(16.dp)
+
         ) {
             Row() {
                 Text("내 질문")
