@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.linkup.android.R
 import com.linkup.android.root.NavGroup
+import com.linkup.android.ui.components.AuthLogo
 import com.linkup.android.ui.components.CustomButton
 import com.linkup.android.ui.components.CustomTextField
 import com.linkup.android.ui.theme.SubColor
@@ -43,22 +44,7 @@ fun SignInScreen(navController: NavController) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.logo),
-                contentDescription = "Logo",
-                modifier = Modifier
-                    .width(84.dp)
-            )
-            Text(
-                text = "로그인",
-                fontSize = 40.sp,
-                fontWeight = FontWeight.SemiBold,
-                modifier = Modifier
-            )
-        }
+        AuthLogo("로그인")
 
         Column(
             modifier = Modifier

@@ -25,6 +25,7 @@ import androidx.navigation.NavController
 import com.linkup.android.R
 import com.linkup.android.feature.auth.PasswordValidator
 import com.linkup.android.root.NavGroup
+import com.linkup.android.ui.components.AuthLogo
 import com.linkup.android.ui.components.CustomButton
 import com.linkup.android.ui.components.CustomTextField
 import com.linkup.android.ui.theme.SubColor
@@ -76,23 +77,7 @@ fun SignUpScreen(navController: NavController) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.logo),
-                contentDescription = "Logo",
-                modifier = Modifier
-                    .width(84.dp)
-            )
-            Text(
-                text = "회원가입",
-                fontSize = 40.sp,
-                fontWeight = FontWeight.SemiBold,
-                modifier = Modifier
-            )
-        }
-
+        AuthLogo("회원가입")
         Column(
             modifier = Modifier.padding(top = 64.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
