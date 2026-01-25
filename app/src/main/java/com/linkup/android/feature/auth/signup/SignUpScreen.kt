@@ -129,6 +129,7 @@ fun SignUpScreen(navController: NavController) {
                 value = pw,
                 onValueChange = {
                     pw = it
+                    pwCheck = ""
                     isPwCheckTouched = false
                 }, placeHolder = "비밀번호를 입력하세요."
             )

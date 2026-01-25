@@ -24,6 +24,7 @@ fun CustomButton(
 ) {
     Button(
         onClick = onClick,
+        enabled = enabled,
         modifier = Modifier
             .fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
