@@ -2,6 +2,7 @@ package com.linkup.android.feature.auth.signin
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,6 +24,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.linkup.android.R
 import com.linkup.android.root.NavGroup
+import com.linkup.android.ui.components.AuthLogo
 import com.linkup.android.ui.components.CustomButton
 import com.linkup.android.ui.components.CustomTextField
 import com.linkup.android.ui.theme.SubColor
@@ -42,22 +44,7 @@ fun SignInScreen(navController: NavController) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.logo),
-                contentDescription = "Logo",
-                modifier = Modifier
-                    .width(84.dp)
-            )
-            Text(
-                text = "로그인",
-                fontSize = 40.sp,
-                fontWeight = FontWeight.SemiBold,
-                modifier = Modifier
-            )
-        }
+        AuthLogo("로그인")
 
         Column(
             modifier = Modifier
@@ -92,6 +79,9 @@ fun SignInScreen(navController: NavController) {
                 fontSize = 12.sp,
                 modifier = Modifier
                     .align(alignment = Alignment.End)
+                    .clickable {
+                        navController.navigate(NavGroup.PwChange)
+                    }
             )
         }
 

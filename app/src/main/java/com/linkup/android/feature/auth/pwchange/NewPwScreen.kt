@@ -1,12 +1,10 @@
-package com.linkup.android.feature.auth.signup
+package com.linkup.android.feature.auth.pwchange
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -17,12 +15,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.linkup.android.R
 import com.linkup.android.feature.auth.PasswordValidator
 import com.linkup.android.root.NavGroup
 import com.linkup.android.ui.components.AuthLogo
@@ -30,26 +25,14 @@ import com.linkup.android.ui.components.CustomButton
 import com.linkup.android.ui.components.CustomTextField
 import com.linkup.android.ui.theme.SubColor
 
-fun isValidEmail(email: String): Boolean {
-    return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
-}
-
 @Composable
-fun SignUpScreen(navController: NavController) {
+fun NewPwScreen(navController: NavController) {
+
     var isPwCheckTouched by remember { mutableStateOf(false) }
 
-    var email by remember { mutableStateOf("") }
-    var nickName by remember { mutableStateOf("") }
     var pw by remember { mutableStateOf("") }
     var pwCheck by remember { mutableStateOf("") }
 
-    // error
-    val isEmailError by remember {
-        derivedStateOf {
-            email.isNotEmpty() && !isValidEmail(email)
-        }
-    }
-    var isNickNameError by remember { mutableStateOf(false) }
     val isPwError by remember {
         derivedStateOf {
             pw.isNotEmpty() && !PasswordValidator.isValidPassword(pw)
@@ -65,9 +48,11 @@ fun SignUpScreen(navController: NavController) {
         }
     }
 
-
-    val isSignUpEnabled =
-        email.isNotEmpty() && nickName.isNotEmpty() && pw.isNotEmpty() && pwCheck.isNotEmpty() && !isEmailError && !isNickNameError && !isPwError && !isPwCheckError
+    val isButtonEnabled =
+        pw.isNotEmpty() &&
+                pwCheck.isNotEmpty() &&
+                !isPwError &&
+                !isPwCheckError
 
     Column(
         modifier = Modifier
@@ -77,46 +62,20 @@ fun SignUpScreen(navController: NavController) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        AuthLogo("회원가입")
+        AuthLogo(text = "비밀번호 찾기")
+
         Column(
-            modifier = Modifier.padding(top = 64.dp),
+            modifier = Modifier
+                .padding(top = 64.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            CustomTextField(
-                value = email,
-                onValueChange = {
-                    email = it
-                }, placeHolder = "이메일을 입력하세요."
-            )
-
-            if (isEmailError) {
-                Text(
-                    text = "이메일 형식이 맞지 않습니다.", color = Color.Red, fontSize = 14.sp
-                )
-            }
-
-            CustomTextField(
-                value = nickName,
-                onValueChange = {
-                    nickName = it
-                }, placeHolder = "닉네임을 입력하세요."
-            )
-
-
-            if (isNickNameError) {
-                Text(
-                    text = "이미 사용중인 닉네임입니다.", color = Color.Red, fontSize = 14.sp
-                )
-            }
-
-
             CustomTextField(
                 value = pw,
                 onValueChange = {
                     pw = it
                     pwCheck = ""
                     isPwCheckTouched = false
-                }, placeHolder = "비밀번호를 입력하세요."
+                }, placeHolder = "새 비밀번호를 입력하세요."
             )
 
             if (isPwError) {
@@ -133,7 +92,7 @@ fun SignUpScreen(navController: NavController) {
                 onValueChange = {
                     pwCheck = it
                     isPwCheckTouched = true
-                }, placeHolder = "비밀번호를 다시 입력하세요."
+                }, placeHolder = "새 비밀번호를 다시 입력하세요."
             )
 
             if (isPwCheckError) {
@@ -141,33 +100,25 @@ fun SignUpScreen(navController: NavController) {
                     text = "비밀번호가 일치하지 않습니다.", color = Color.Red, fontSize = 14.sp
                 )
             }
-
         }
 
         Column(
-            modifier = Modifier.padding(top = 32.dp),
+            modifier = Modifier
+                .padding(top = 32.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
 
             CustomButton(
-                text = "회원가입",
+                text = "비밀번호 변경",
                 contentColor = Color.White,
                 containerColor = SubColor,
                 border = SubColor,
-                enabled = isSignUpEnabled,
+                enabled = isButtonEnabled,
                 onClick = {
-                    // 회원가입
+                    navController.navigate(NavGroup.SignIn)
                 }
             )
-
-            CustomButton(
-                text = "로그인",
-                contentColor = SubColor,
-                containerColor = Color.White,
-                border = SubColor,
-                onClick = { navController.navigate(NavGroup.SignIn) },
-                modifier = Modifier
-            )
         }
+
     }
 }
