@@ -28,15 +28,10 @@ import com.linkup.android.ui.components.CustomButton
 import com.linkup.android.ui.components.CustomTextField
 import com.linkup.android.ui.theme.SubColor
 
-fun isValidEmail(email: String): Boolean {
-    return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
-}
-
 @Composable
-fun PwChangeScreen(navController: NavController) {
+fun VerifyScreen(navController: NavController) {
 
-    var email by remember { mutableStateOf("") }
-    var isEmailError by remember { mutableStateOf(false) }
+    var verify by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -54,18 +49,11 @@ fun PwChangeScreen(navController: NavController) {
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             CustomTextField(
-                value = email,
+                value = verify,
                 onValueChange = {
-                    email = it
-                    isEmailError = email.isNotEmpty() && !isValidEmail(email)
-                }, placeHolder = "이메일을 입력하세요."
+                    verify = it
+                }, placeHolder = "인증번호를 입력하세요."
             )
-
-            if (isEmailError) {
-                Text(
-                    text = "이메일 형식이 맞지 않습니다.", color = Color.Red, fontSize = 14.sp
-                )
-            }
         }
 
         Column(
@@ -75,22 +63,13 @@ fun PwChangeScreen(navController: NavController) {
         ) {
 
             CustomButton(
-                text = "인증번호 발송",
+                text = "인증번호 확인",
                 contentColor = Color.White,
                 containerColor = SubColor,
                 border = SubColor,
                 onClick = {
-                    navController.navigate(NavGroup.Verify)
+                    navController.navigate(NavGroup.NewPw)
                 }
-            )
-
-            CustomButton(
-                text = "로그인 하기",
-                contentColor = SubColor,
-                containerColor = Color.White,
-                border = SubColor,
-                onClick = { navController.navigate(NavGroup.SignIn) },
-                modifier = Modifier
             )
         }
 
