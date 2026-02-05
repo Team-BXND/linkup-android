@@ -1,12 +1,10 @@
 package com.linkup.android.feature.auth.signup
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -17,12 +15,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.linkup.android.R
 import com.linkup.android.feature.auth.PasswordValidator
 import com.linkup.android.root.NavGroup
 import com.linkup.android.ui.components.AuthLogo
@@ -36,6 +32,7 @@ fun isValidEmail(email: String): Boolean {
 
 @Composable
 fun SignUpScreen(navController: NavController) {
+    val viewModel: SignUpViewModel = hiltViewModel()
     var isPwCheckTouched by remember { mutableStateOf(false) }
 
     var email by remember { mutableStateOf("") }
@@ -156,7 +153,11 @@ fun SignUpScreen(navController: NavController) {
                 border = SubColor,
                 enabled = isSignUpEnabled,
                 onClick = {
-                    // 회원가입
+                    viewModel.signUp(
+                        email = email,
+                        username = nickName,
+                        password = pw
+                    )
                 }
             )
 

@@ -23,7 +23,7 @@ object NavGroup {
 fun AppNavGraph(
     navController: NavHostController,
 ){
-    NavHost(navController = navController, startDestination = NavGroup.SignIn){
+    NavHost(navController = navController, startDestination = NavGroup.SignUp){
         composable(NavGroup.SignIn) { SignInScreen(navController) }
         composable(NavGroup.SignUp) { SignUpScreen(navController) }
         composable(NavGroup.PwChange) { PwChangeScreen(navController) }
