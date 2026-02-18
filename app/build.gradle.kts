@@ -54,6 +54,8 @@ android {
 }
 
 dependencies {
+    implementation("androidx.compose.material:material-icons-extended")
+
     // datastore
     implementation(libs.androidx.datastore.preferences)
 

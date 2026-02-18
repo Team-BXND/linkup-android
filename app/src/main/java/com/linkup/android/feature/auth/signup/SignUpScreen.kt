@@ -33,6 +33,8 @@ fun isValidEmail(email: String): Boolean {
 @Composable
 fun SignUpScreen(navController: NavController) {
     val viewModel: SignUpViewModel = hiltViewModel()
+    val uiState = viewModel.uiState
+
     var isPwCheckTouched by remember { mutableStateOf(false) }
 
     var email by remember { mutableStateOf("") }
@@ -46,7 +48,6 @@ fun SignUpScreen(navController: NavController) {
             email.isNotEmpty() && !isValidEmail(email)
         }
     }
-    var isNickNameError by remember { mutableStateOf(false) }
     val isPwError by remember {
         derivedStateOf {
             pw.isNotEmpty() && !PasswordValidator.isValidPassword(pw)
@@ -64,7 +65,18 @@ fun SignUpScreen(navController: NavController) {
 
 
     val isSignUpEnabled =
-        email.isNotEmpty() && nickName.isNotEmpty() && pw.isNotEmpty() && pwCheck.isNotEmpty() && !isEmailError && !isNickNameError && !isPwError && !isPwCheckError
+        email.isNotEmpty() &&
+                nickName.isNotEmpty() &&
+                pw.isNotEmpty() &&
+                pwCheck.isNotEmpty() &&
+                !isEmailError &&
+                !isPwError &&
+                !isPwCheckError &&
+                uiState.emailError == null &&
+                uiState.nickNameError == null
+
+    val showEmailError = isEmailError || uiState.emailError != null
+
 
     Column(
         modifier = Modifier
@@ -83,12 +95,15 @@ fun SignUpScreen(navController: NavController) {
                 value = email,
                 onValueChange = {
                     email = it
+                    viewModel.clearEmailError()
                 }, placeHolder = "이메일을 입력하세요."
             )
 
-            if (isEmailError) {
+            if (showEmailError) {
                 Text(
-                    text = "이메일 형식이 맞지 않습니다.", color = Color.Red, fontSize = 14.sp
+                    text = uiState.emailError ?: "이메일 형식이 맞지 않습니다.",
+                    color = Color.Red,
+                    fontSize = 14.sp
                 )
             }
 
@@ -100,9 +115,11 @@ fun SignUpScreen(navController: NavController) {
             )
 
 
-            if (isNickNameError) {
+            if (uiState.nickNameError != null) {
                 Text(
-                    text = "이미 사용중인 닉네임입니다.", color = Color.Red, fontSize = 14.sp
+                    text = uiState.nickNameError,
+                    color = Color.Red,
+                    fontSize = 14.sp
                 )
             }
 
@@ -113,7 +130,8 @@ fun SignUpScreen(navController: NavController) {
                     pw = it
                     pwCheck = ""
                     isPwCheckTouched = false
-                }, placeHolder = "비밀번호를 입력하세요."
+                }, placeHolder = "비밀번호를 입력하세요.",
+                isPassword = true
             )
 
             if (isPwError) {
@@ -130,7 +148,8 @@ fun SignUpScreen(navController: NavController) {
                 onValueChange = {
                     pwCheck = it
                     isPwCheckTouched = true
-                }, placeHolder = "비밀번호를 다시 입력하세요."
+                }, placeHolder = "비밀번호를 다시 입력하세요.",
+                isPassword = true
             )
 
             if (isPwCheckError) {

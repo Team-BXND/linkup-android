@@ -1,9 +1,6 @@
 package com.linkup.android.network.auth.signUp
 
-data class BaseResponse<T>(
-    val data: T
-)
-
-data class SignUpMessage(
+data class SignUpResponse(
+    val code: String,
     val message: String
 )

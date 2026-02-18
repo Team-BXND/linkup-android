@@ -5,7 +5,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.linkup.android.network.ErrorParser
 import com.linkup.android.network.auth.signUp.SignUpRequest
+import com.linkup.android.network.auth.signUp.SignUpResponse
 import com.linkup.android.network.auth.signUp.SignUpService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -16,32 +18,42 @@ class SignUpViewModel @Inject constructor(
     private val signUpService: SignUpService
 ) : ViewModel() {
 
-    var signUpResult by mutableStateOf<String?>(null)
+    var uiState by mutableStateOf(SignUpUiState())
         private set
 
-    fun signUp(
-        email: String,
-        username: String,
-        password: String
-    ) {
+    fun signUp(email: String, username: String, password: String) {
         viewModelScope.launch {
-            try {
-                val response = signUpService.signUp(
-                    SignUpRequest(
-                        email = email,
-                        username = username,
-                        password = password
-                    )
-                )
+            val result = signUpService.signUp(
+                SignUpRequest(email, username, password)
+            )
 
-                if (response.isSuccessful) {
-                    signUpResult = response.body()?.data?.message
-                } else {
-                    signUpResult = "회원가입 실패 (${response.code()})"
+            if (result.isSuccessful) {
+                // 성공 처리
+            } else {
+                val error = ErrorParser.parse(result, SignUpResponse::class.java)
+
+                uiState = when (error?.code) {
+                    "EMAIL_ALREADY_USED" -> {
+                        uiState.copy(emailError = "이미 사용 중인 이메일입니다.")
+                    }
+
+                    "USERNAME_ALREADY_USED" -> {
+                        uiState.copy(nickNameError = "이미 사용 중인 닉네임입니다.")
+                    }
+
+                    else -> {
+                        uiState.copy(globalError = "회원가입에 실패했습니다.")
+                    }
                 }
-            } catch (e: Exception) {
-                signUpResult = e.message ?: "네트워크 에러"
             }
         }
     }
+    fun clearEmailError() {
+        uiState = uiState.copy(emailError = null)
+    }
+
+    fun clearNickNameError() {
+        uiState = uiState.copy(nickNameError = null)
+    }
+
 }

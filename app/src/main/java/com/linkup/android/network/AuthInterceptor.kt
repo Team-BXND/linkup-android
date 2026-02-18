@@ -13,7 +13,6 @@ class AuthInterceptor @Inject constructor(
         val request = chain.request()
         val path = request.url.encodedPath
 
-        // 🔹 토큰 안 붙이는 API들
         val noAuthPaths = listOf(
             "/auth/login",
             "/auth/signup",
