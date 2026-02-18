@@ -44,8 +44,6 @@ androidx-compose-material3 = { group = "androidx.compose.material3", name = "mat
 logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "loggingInterceptor" }
 okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
-androidx-compose-animation-core-lint = { group = "androidx.compose.animation", name = "animation-core-lint", version.ref = "animationCoreLint" }
-androidx-compose-material3-lint = { group = "androidx.compose.material3", name = "material3-lint", version.ref = "material3Lint" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

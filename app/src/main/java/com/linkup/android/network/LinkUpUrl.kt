@@ -6,4 +6,5 @@ object LinkUpUrl {
     const val baseUrl = BuildConfig.BASE_URL
 
     const val signUp = "${baseUrl}auth/signup"
+    const val signIn = "${baseUrl}auth/signin"
 }

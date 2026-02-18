@@ -1,5 +1,6 @@
 package com.linkup.android.network
 
+import com.linkup.android.network.auth.signIn.SignInService
 import com.linkup.android.network.auth.signUp.SignUpService
 import dagger.Module
 import dagger.Provides
@@ -53,5 +54,10 @@ object NetworkModule {
         retrofit: Retrofit
     ): SignUpService = retrofit.create(SignUpService::class.java)
 
+    @Provides
+    @Singleton
+    fun provideSignInService(
+        retrofit: Retrofit
+    ): SignInService = retrofit.create(SignInService::class.java)
 
 }

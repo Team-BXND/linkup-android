@@ -3,10 +3,8 @@ import android.content.Context
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.preferencesDataStore
 import com.linkup.android.data.datastore.UserPrefsKeys.ACCESS_TOKEN
-import com.linkup.android.data.datastore.UserPrefsKeys.PUBLIC_ID
 import com.linkup.android.data.datastore.UserPrefsKeys.REFRESH_TOKEN
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -29,16 +27,12 @@ class UserRepository @Inject constructor(
     fun getCachedAccessToken(): String? = cachedAccessToken
     fun getCachedRefreshToken(): String? = cachedRefreshToken
 
-    val publicIdFlow: Flow<String?> = context.dataStore.data
-        .map { it[PUBLIC_ID] }
-
     suspend fun saveUserData(
         publicId: String? = null,
         accessToken: String? = null,
         refreshToken: String? = null
     ) {
         context.dataStore.edit { prefs ->
-            publicId?.let { prefs[PUBLIC_ID] = it }
             accessToken?.let {
                 prefs[ACCESS_TOKEN] = it
                 cachedAccessToken = it
@@ -52,7 +46,6 @@ class UserRepository @Inject constructor(
 
     suspend fun clearUserData() {
         context.dataStore.edit { prefs ->
-            prefs.remove(PUBLIC_ID)
             prefs.remove(ACCESS_TOKEN)
             prefs.remove(REFRESH_TOKEN)
         }
@@ -60,8 +53,6 @@ class UserRepository @Inject constructor(
         cachedRefreshToken = null
     }
 
-    suspend fun getPublicIdSnapshot(): String? =
-        context.dataStore.data.map { it[PUBLIC_ID] }.first()
 
     suspend fun getAccessTokenSnapshot(): String? =
         context.dataStore.data.map { it[ACCESS_TOKEN] }.first()
