@@ -1,7 +1,10 @@
 package com.linkup.android.network
 
+import com.linkup.android.network.auth.refresh.RefreshService
 import com.linkup.android.network.auth.signIn.SignInService
 import com.linkup.android.network.auth.signUp.SignUpService
+import com.linkup.android.network.client.AuthInterceptor
+import com.linkup.android.network.client.TokenAuthenticator
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -10,6 +13,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -28,11 +32,13 @@ object NetworkModule {
     @Singleton
     fun provideOkHttpClient(
         loggingInterceptor: HttpLoggingInterceptor,
-        authInterceptor: AuthInterceptor
+        authInterceptor: AuthInterceptor,
+        tokenAuthenticator: TokenAuthenticator
     ): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(authInterceptor)
             .addInterceptor(loggingInterceptor)
+            .authenticator(tokenAuthenticator)
             .build()
     }
 
@@ -59,5 +65,38 @@ object NetworkModule {
     fun provideSignInService(
         retrofit: Retrofit
     ): SignInService = retrofit.create(SignInService::class.java)
+    @Provides
+    @Singleton
+    @Named("refreshClient")
+    fun provideRefreshOkHttpClient(
+        loggingInterceptor: HttpLoggingInterceptor
+    ): OkHttpClient {
+        return OkHttpClient.Builder()
+            .addInterceptor(loggingInterceptor)
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    @Named("refreshRetrofit")
+    fun provideRefreshRetrofit(
+        @Named("refreshClient") okHttpClient: OkHttpClient
+    ): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(LinkUpUrl.baseUrl)
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
+
+    @Provides
+    @Singleton
+    fun provideRefreshService(
+        @Named("refreshRetrofit") retrofit: Retrofit
+    ): RefreshService =
+        retrofit.create(RefreshService::class.java)
+
 
 }
+

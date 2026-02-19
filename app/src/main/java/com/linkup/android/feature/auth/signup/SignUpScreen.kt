@@ -111,6 +111,7 @@ fun SignUpScreen(navController: NavController) {
                 value = nickName,
                 onValueChange = {
                     nickName = it
+                    viewModel.clearNickNameError()
                 }, placeHolder = "닉네임을 입력하세요."
             )
 
