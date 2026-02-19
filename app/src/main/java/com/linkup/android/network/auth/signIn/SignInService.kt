@@ -7,6 +7,6 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface SignInService {
-    @POST(LinkUpUrl.signIn)
+    @POST(LinkUpUrl.Auth.signIn)
     suspend fun signIn(@Body request: SignInRequest): Response<BaseResponse<SignInResponse>>
 }

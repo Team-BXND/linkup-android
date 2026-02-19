@@ -27,8 +27,7 @@ class UserRepository @Inject constructor(
     fun getCachedAccessToken(): String? = cachedAccessToken
     fun getCachedRefreshToken(): String? = cachedRefreshToken
 
-    suspend fun saveUserData(
-        publicId: String? = null,
+    suspend fun saveToken(
         accessToken: String? = null,
         refreshToken: String? = null
     ) {
@@ -44,7 +43,7 @@ class UserRepository @Inject constructor(
         }
     }
 
-    suspend fun clearUserData() {
+    suspend fun clearTokens() {
         context.dataStore.edit { prefs ->
             prefs.remove(ACCESS_TOKEN)
             prefs.remove(REFRESH_TOKEN)

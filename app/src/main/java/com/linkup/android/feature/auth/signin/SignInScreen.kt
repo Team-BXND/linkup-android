@@ -44,6 +44,7 @@ fun SignInScreen(navController: NavController) {
                 popUpTo(NavGroup.SignIn) { inclusive = true }
             }
         }
+        
     }
 
     Column(

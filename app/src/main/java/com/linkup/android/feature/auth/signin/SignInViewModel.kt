@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.linkup.android.data.datastore.UserRepository
 import com.linkup.android.network.ErrorParser
 import com.linkup.android.network.auth.signIn.SignInError
 import com.linkup.android.network.auth.signIn.SignInRequest
@@ -15,7 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignInViewModel @Inject constructor(
-    private val signInService: SignInService
+    private val signInService: SignInService,
+    private val userRepository: UserRepository
 ) : ViewModel() {
 
     var uiState by mutableStateOf(SignInUiState())
@@ -35,7 +37,11 @@ class SignInViewModel @Inject constructor(
                 val body = result.body()
 
                 if (body != null) {
-                    // TODO: accessToken 저장 (DataStore 등)
+
+                    userRepository.saveToken(
+                        accessToken = body.data.accessToken,
+                        refreshToken = body.data.refreshToken
+                    )
 
                     uiState = uiState.copy(
                         isSuccess = true,
@@ -43,6 +49,7 @@ class SignInViewModel @Inject constructor(
                         globalError = null
                     )
                 }
+
             } else {
                 val error = ErrorParser.parse(result, SignInError::class.java)
 
