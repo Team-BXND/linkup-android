@@ -40,11 +40,10 @@ fun SignInScreen(navController: NavController) {
 
     LaunchedEffect(uiState.isSuccess) {
         if (uiState.isSuccess) {
-            navController.navigate(NavGroup.SignUp) {
+            navController.navigate(NavGroup.Send) {
                 popUpTo(NavGroup.SignIn) { inclusive = true }
             }
         }
-        
     }
 
     Column(
@@ -92,7 +91,7 @@ fun SignInScreen(navController: NavController) {
                 modifier = Modifier
                     .align(alignment = Alignment.End)
                     .clickable {
-                        navController.navigate(NavGroup.PwChange)
+                        navController.navigate(NavGroup.Send)
                     }
             )
         }

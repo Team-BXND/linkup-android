@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -48,6 +49,7 @@ fun SignUpScreen(navController: NavController) {
             email.isNotEmpty() && !isValidEmail(email)
         }
     }
+
     val isPwError by remember {
         derivedStateOf {
             pw.isNotEmpty() && !PasswordValidator.isValidPassword(pw)
@@ -76,6 +78,15 @@ fun SignUpScreen(navController: NavController) {
                 uiState.nickNameError == null
 
     val showEmailError = isEmailError || uiState.emailError != null
+
+    LaunchedEffect(uiState.isSuccess) {
+        if (uiState.isSuccess) {
+            navController.navigate(NavGroup.SignIn) {
+                popUpTo(NavGroup.SignUp) { inclusive = true }
+            }
+        }
+    }
+
 
 
     Column(

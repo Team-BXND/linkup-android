@@ -28,7 +28,7 @@ class SignUpViewModel @Inject constructor(
             )
 
             if (result.isSuccessful) {
-                // 성공 처리
+                uiState = uiState.copy(isSuccess = true)
             } else {
                 val error = ErrorParser.parse(result, SignUpResponse::class.java)
 

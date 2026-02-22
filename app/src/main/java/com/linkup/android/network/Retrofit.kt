@@ -1,5 +1,6 @@
 package com.linkup.android.network
 
+import com.linkup.android.network.auth.pwChange.PwChangeService
 import com.linkup.android.network.auth.refresh.RefreshService
 import com.linkup.android.network.auth.signIn.SignInService
 import com.linkup.android.network.auth.signUp.SignUpService
@@ -65,6 +66,13 @@ object NetworkModule {
     fun provideSignInService(
         retrofit: Retrofit
     ): SignInService = retrofit.create(SignInService::class.java)
+
+    @Provides
+    @Singleton
+    fun pwChangeService(
+        retrofit: Retrofit
+    ): PwChangeService = retrofit.create(PwChangeService::class.java)
+
     @Provides
     @Singleton
     @Named("refreshClient")
