@@ -1,5 +1,6 @@
 package com.linkup.android.feature.auth.pwchange
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -7,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -17,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.linkup.android.feature.auth.PasswordValidator
 import com.linkup.android.root.NavGroup
@@ -26,7 +29,12 @@ import com.linkup.android.ui.components.CustomTextField
 import com.linkup.android.ui.theme.SubColor
 
 @Composable
-fun NewPwScreen(navController: NavController) {
+fun ChangePwScreen(navController: NavController, email: String) {
+
+    Log.d("Test", email)
+
+    val viewModel: ChangePwViewModel = hiltViewModel()
+    val uiState = viewModel.uiState
 
     var isPwCheckTouched by remember { mutableStateOf(false) }
 
@@ -54,6 +62,14 @@ fun NewPwScreen(navController: NavController) {
                 !isPwError &&
                 !isPwCheckError
 
+    LaunchedEffect(uiState.step) {
+        if (uiState.step == ChangePwStep.PASSWORD_CHANGED) {
+            navController.navigate(NavGroup.SignIn){
+                popUpTo(0) {inclusive = true}
+            }
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -75,7 +91,8 @@ fun NewPwScreen(navController: NavController) {
                     pw = it
                     pwCheck = ""
                     isPwCheckTouched = false
-                }, placeHolder = "새 비밀번호를 입력하세요."
+                }, placeHolder = "새 비밀번호를 입력하세요.",
+                isPassword = true
             )
 
             if (isPwError) {
@@ -92,7 +109,8 @@ fun NewPwScreen(navController: NavController) {
                 onValueChange = {
                     pwCheck = it
                     isPwCheckTouched = true
-                }, placeHolder = "새 비밀번호를 다시 입력하세요."
+                }, placeHolder = "새 비밀번호를 다시 입력하세요.",
+                isPassword = true
             )
 
             if (isPwCheckError) {
@@ -115,7 +133,7 @@ fun NewPwScreen(navController: NavController) {
                 border = SubColor,
                 enabled = isButtonEnabled,
                 onClick = {
-                    navController.navigate(NavGroup.SignIn)
+                    viewModel.changePassword(email,pw)
                 }
             )
         }
