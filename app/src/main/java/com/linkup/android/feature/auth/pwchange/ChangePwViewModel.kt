@@ -89,7 +89,7 @@ class ChangePwViewModel @Inject constructor(
                         }
 
                         else -> {
-                            uiState.copy(globalError = "ㄹ")
+                            uiState.copy(globalError = "네트워크 오류가 발생했습니다")
                         }
                     }
                 }

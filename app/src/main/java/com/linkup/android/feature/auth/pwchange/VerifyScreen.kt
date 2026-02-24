@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.linkup.android.root.NavGroup
 import com.linkup.android.ui.components.AuthLogo
 import com.linkup.android.ui.components.CustomButton
 import com.linkup.android.ui.components.CustomTextField
@@ -40,7 +41,10 @@ fun VerifyScreen(
 
     LaunchedEffect(uiState.step) {
         if (uiState.step == ChangePwStep.CODE_VERIFIED) {
-            navController.navigate("changePw/${email}")
+            navController.navigate(
+                NavGroup.ChangePw.createRoute(email)
+            )
+            viewModel.resetStep()
         }
     }
 

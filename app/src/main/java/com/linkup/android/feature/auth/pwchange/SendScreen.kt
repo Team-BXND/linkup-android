@@ -46,7 +46,9 @@ fun PwChangeScreen(navController: NavController) {
 
     LaunchedEffect(uiState.step) {
         if (uiState.step == ChangePwStep.EMAIL_SENT) {
-            navController.navigate("verify/$email")
+            navController.navigate(
+                NavGroup.Verify.createRoute(email)
+            )
             viewModel.resetStep()
         }
     }

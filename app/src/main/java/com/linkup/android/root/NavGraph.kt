@@ -13,13 +13,28 @@ import com.linkup.android.feature.auth.signin.SignInScreen
 import com.linkup.android.feature.auth.signup.SignUpScreen
 
 object NavGroup {
+
+    const val Email = "email"
+
     const val SignIn = "signIn"
     const val SignUp = "signUp"
     const val Send = "send"
-    const val ChangePw = "changePw/{email}"
-    const val Verify = "verify/{email}"
 
+    object Verify {
+        const val route = "verify"
+        const val routeWithArg = "$route/{$Email}"
+
+        fun createRoute(email: String) = "$route/$email"
+    }
+
+    object ChangePw {
+        const val route = "changePw"
+        const val routeWithArg = "$route/{$Email}"
+
+        fun createRoute(email: String) = "$route/$email"
+    }
 }
+
 
 @Composable
 fun AppNavGraph(
@@ -30,27 +45,41 @@ fun AppNavGraph(
         composable(NavGroup.SignUp) { SignUpScreen(navController) }
         composable(NavGroup.Send) { PwChangeScreen(navController) }
         composable(
-            route = NavGroup.Verify, arguments = listOf(
-            navArgument("email") { type = NavType.StringType })) { backStackEntry ->
+            route = NavGroup.Verify.routeWithArg,
+            arguments = listOf(
+                navArgument(NavGroup.Email) {
+                    type = NavType.StringType
+                }
+            )
+        ) { backStackEntry ->
 
-            val email = backStackEntry.arguments?.getString("email")
+            val email = backStackEntry.arguments
+                ?.getString(NavGroup.Email)
+                .orEmpty()
 
             VerifyScreen(
-                navController = navController, email = email ?: ""
+                navController = navController,
+                email = email
             )
         }
 
         composable(
-            route = NavGroup.ChangePw, arguments = listOf(
-                navArgument("email") { type = NavType.StringType })) { backStackEntry ->
+            route = NavGroup.ChangePw.routeWithArg,
+            arguments = listOf(
+                navArgument(NavGroup.Email) {
+                    type = NavType.StringType
+                }
+            )
+        ) { backStackEntry ->
 
-            val email = backStackEntry.arguments?.getString("email")
+            val email = backStackEntry.arguments
+                ?.getString(NavGroup.Email)
+                .orEmpty()
 
             ChangePwScreen(
-                navController = navController, email = email ?: ""
+                navController = navController,
+                email = email
             )
         }
-
     }
-
 }
