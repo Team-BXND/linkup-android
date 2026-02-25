@@ -6,6 +6,7 @@ import com.linkup.android.network.auth.signIn.SignInService
 import com.linkup.android.network.auth.signUp.SignUpService
 import com.linkup.android.network.client.AuthInterceptor
 import com.linkup.android.network.client.TokenAuthenticator
+import com.linkup.android.network.qna.QnaService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -75,6 +76,15 @@ object NetworkModule {
 
     @Provides
     @Singleton
+    fun provideQnaService(
+        retrofit: Retrofit
+    ): QnaService =
+        retrofit.create(QnaService::class.java)
+
+
+
+    @Provides
+    @Singleton
     @Named("refreshClient")
     fun provideRefreshOkHttpClient(
         loggingInterceptor: HttpLoggingInterceptor
@@ -104,7 +114,6 @@ object NetworkModule {
         @Named("refreshRetrofit") retrofit: Retrofit
     ): RefreshService =
         retrofit.create(RefreshService::class.java)
-
 
 }
 
