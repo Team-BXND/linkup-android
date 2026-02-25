@@ -81,8 +81,8 @@ fun SignUpScreen(navController: NavController) {
 
     LaunchedEffect(uiState.isSuccess) {
         if (uiState.isSuccess) {
-            navController.navigate(NavGroup.SignIn) {
-                popUpTo(NavGroup.SignUp) { inclusive = true }
+            navController.navigate(NavGroup.SIGNIN) {
+                popUpTo(NavGroup.SIGNUP) { inclusive = true }
             }
         }
     }
@@ -197,7 +197,7 @@ fun SignUpScreen(navController: NavController) {
                 contentColor = SubColor,
                 containerColor = Color.White,
                 border = SubColor,
-                onClick = { navController.navigate(NavGroup.SignIn) },
+                onClick = { navController.navigate(NavGroup.SIGNIN) },
                 modifier = Modifier
             )
         }

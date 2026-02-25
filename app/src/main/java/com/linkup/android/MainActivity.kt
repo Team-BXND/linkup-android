@@ -13,6 +13,7 @@ import androidx.compose.runtime.setValue
 import androidx.navigation.compose.rememberNavController
 import com.linkup.android.data.datastore.UserRepository
 import com.linkup.android.feature.auth.signin.SignInScreen
+import com.linkup.android.feature.splash.SplashScreen
 import com.linkup.android.root.AppNavGraph
 import com.linkup.android.ui.theme.LinkUpTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -59,7 +60,7 @@ class MainActivity : ComponentActivity() {
 
                 when (startState) {
                     AppStartState.LOADING -> {
-                        // SplashScreen or Loading UI
+                        SplashScreen(navController)
                     }
 
                     AppStartState.AUTHENTICATED -> {

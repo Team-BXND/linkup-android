@@ -17,4 +17,10 @@ object LinkUpUrl {
 
         const val refresh = "${auth}/refresh"
     }
+
+    object Popular {
+        const val  popular = "${baseUrl}/popular"
+
+        const val hot = "${popular}/hot"
+    }
 }
