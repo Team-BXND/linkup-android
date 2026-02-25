@@ -7,6 +7,7 @@ import com.linkup.android.network.auth.signUp.SignUpService
 import com.linkup.android.network.client.AuthInterceptor
 import com.linkup.android.network.client.TokenAuthenticator
 import com.linkup.android.network.rank.RankService
+import com.linkup.android.network.qna.QnaService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -79,6 +80,15 @@ object NetworkModule {
     fun rankService(
         retrofit: Retrofit
     ): RankService = retrofit.create(RankService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideQnaService(
+        retrofit: Retrofit
+    ): QnaService =
+        retrofit.create(QnaService::class.java)
+
+
 
     @Provides
     @Singleton

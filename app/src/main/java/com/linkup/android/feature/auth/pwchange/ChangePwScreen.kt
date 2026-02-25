@@ -64,7 +64,7 @@ fun ChangePwScreen(navController: NavController, email: String) {
 
     LaunchedEffect(uiState.step) {
         if (uiState.step == ChangePwStep.PASSWORD_CHANGED) {
-            navController.navigate(NavGroup.SignIn){
+            navController.navigate(NavGroup.SIGNIN){
                 popUpTo(0) {inclusive = true}
             }
         }
