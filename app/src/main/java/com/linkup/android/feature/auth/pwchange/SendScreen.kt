@@ -102,7 +102,7 @@ fun PwChangeScreen(navController: NavController) {
                 contentColor = SubColor,
                 containerColor = Color.White,
                 border = SubColor,
-                onClick = { navController.navigate(NavGroup.SignIn) },
+                onClick = { navController.navigate(NavGroup.SIGNIN) },
                 modifier = Modifier
             )
         }

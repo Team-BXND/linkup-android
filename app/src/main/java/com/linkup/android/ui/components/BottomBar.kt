@@ -3,9 +3,7 @@ package com.linkup.android.ui.components
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.outlined.QuestionMark
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -32,9 +30,9 @@ fun BottomBar(
                 windowInsets = WindowInsets(0, 0, 0, 0)
     ) {
         NavigationBarItem(
-            selected = currentRoute == NavGroup.Home,
+            selected = currentRoute == NavGroup.HOME,
             onClick = {
-                navController.navigate(NavGroup.Home) {
+                navController.navigate(NavGroup.HOME) {
                     popUpTo(navController.graph.startDestinationId)
                     launchSingleTop = true
                 }

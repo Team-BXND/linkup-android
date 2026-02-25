@@ -28,7 +28,7 @@ fun TopBar(navController: NavController){
             .fillMaxWidth()
             .height(53.dp)
             .clickable(
-                onClick = { navController.navigate(NavGroup.Home) }
+                onClick = { navController.navigate(NavGroup.HOME) }
             )
     ) {
         Image(
