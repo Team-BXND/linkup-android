@@ -13,6 +13,7 @@ import com.linkup.android.feature.auth.pwchange.PwChangeScreen
 import com.linkup.android.feature.auth.pwchange.VerifyScreen
 import com.linkup.android.feature.auth.signin.SignInScreen
 import com.linkup.android.feature.auth.signup.SignUpScreen
+import com.linkup.android.feature.rank.RankScreen
 import com.linkup.android.feature.home.HomeScreen
 import com.linkup.android.feature.splash.SplashScreen
 import com.linkup.android.ui.components.BottomBar
@@ -21,6 +22,10 @@ object NavGroup {
 
     const val EMAIL = "email"
 
+    const val SignIn = "signIn"
+    const val SignUp = "signUp"
+    const val Send = "send"
+    const val Rank = "rank"
     const val SPLASH = "splash"
 
     const val SIGNIN = "signIn"
@@ -80,6 +85,19 @@ fun AppNavGraph(
                     }
                 )
             ) { backStackEntry ->
+    NavHost(navController = navController, startDestination = NavGroup.SignUp) {
+        composable(NavGroup.SignIn) { SignInScreen(navController) }
+        composable(NavGroup.SignUp) { SignUpScreen(navController) }
+        composable(NavGroup.Send) { PwChangeScreen(navController) }
+        composable(NavGroup.Rank) { RankScreen() }
+        composable(
+            route = NavGroup.Verify.routeWithArg,
+            arguments = listOf(
+                navArgument(NavGroup.Email) {
+                    type = NavType.StringType
+                }
+            )
+        ) { backStackEntry ->
 
                 val email = backStackEntry.arguments
                     ?.getString(NavGroup.EMAIL)
