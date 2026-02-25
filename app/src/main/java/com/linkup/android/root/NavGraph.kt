@@ -14,31 +14,34 @@ import com.linkup.android.feature.auth.pwchange.VerifyScreen
 import com.linkup.android.feature.auth.signin.SignInScreen
 import com.linkup.android.feature.auth.signup.SignUpScreen
 import com.linkup.android.feature.home.HomeScreen
+import com.linkup.android.feature.splash.SplashScreen
 import com.linkup.android.ui.components.BottomBar
 
 object NavGroup {
 
-    const val Email = "email"
+    const val EMAIL = "email"
 
-    const val SignIn = "signIn"
-    const val SignUp = "signUp"
-    const val Send = "send"
+    const val SPLASH = "splash"
+
+    const val SIGNIN = "signIn"
+    const val SIGNUP = "signUp"
+    const val SEND = "send"
 
     object Verify {
-        const val route = "verify"
-        const val routeWithArg = "$route/{$Email}"
+        const val ROUTE = "verify"
+        const val ROUTE_WITH_ARG = "$ROUTE/{$EMAIL}"
 
-        fun createRoute(email: String) = "$route/$email"
+        fun createRoute(email: String) = "$ROUTE/$email"
     }
 
     object ChangePw {
-        const val route = "changePw"
-        const val routeWithArg = "$route/{$Email}"
+        const val ROUTE = "changePw"
+        const val ROUTE_WITH_ARG = "$ROUTE/{$EMAIL}"
 
-        fun createRoute(email: String) = "$route/$email"
+        fun createRoute(email: String) = "$ROUTE/$email"
     }
 
-    const val Home = "home"
+    const val HOME = "home"
 }
 
 
@@ -51,7 +54,7 @@ fun AppNavGraph(
     val currentRoute = navBackStackEntry.value?.destination?.route
 
     val bottomBarRoutes = listOf(
-        NavGroup.Home,
+        NavGroup.HOME,
 //        NavGroup.Qna,
 //        NavGroup.Rank
     )
@@ -64,21 +67,22 @@ fun AppNavGraph(
         }
     ) { innerPadding ->
 
-        NavHost(navController = navController, startDestination = NavGroup.Home) {
-            composable(NavGroup.SignIn) { SignInScreen(navController) }
-            composable(NavGroup.SignUp) { SignUpScreen(navController) }
-            composable(NavGroup.Send) { PwChangeScreen(navController) }
+        NavHost(navController = navController, startDestination = NavGroup.HOME) {
+            composable(NavGroup.SIGNIN) { SignInScreen(navController) }
+            composable(NavGroup.SIGNUP) { SignUpScreen(navController) }
+            composable(NavGroup.SEND) { PwChangeScreen(navController) }
+            composable(NavGroup.SPLASH){ SplashScreen(navController) }
             composable(
-                route = NavGroup.Verify.routeWithArg,
+                route = NavGroup.Verify.ROUTE_WITH_ARG,
                 arguments = listOf(
-                    navArgument(NavGroup.Email) {
+                    navArgument(NavGroup.EMAIL) {
                         type = NavType.StringType
                     }
                 )
             ) { backStackEntry ->
 
                 val email = backStackEntry.arguments
-                    ?.getString(NavGroup.Email)
+                    ?.getString(NavGroup.EMAIL)
                     .orEmpty()
 
                 VerifyScreen(
@@ -88,16 +92,16 @@ fun AppNavGraph(
             }
 
             composable(
-                route = NavGroup.ChangePw.routeWithArg,
+                route = NavGroup.ChangePw.ROUTE_WITH_ARG,
                 arguments = listOf(
-                    navArgument(NavGroup.Email) {
+                    navArgument(NavGroup.EMAIL) {
                         type = NavType.StringType
                     }
                 )
             ) { backStackEntry ->
 
                 val email = backStackEntry.arguments
-                    ?.getString(NavGroup.Email)
+                    ?.getString(NavGroup.EMAIL)
                     .orEmpty()
 
                 ChangePwScreen(
@@ -106,7 +110,7 @@ fun AppNavGraph(
                 )
             }
 
-            composable(NavGroup.Home) { HomeScreen(navController,innerPadding = innerPadding) }
+            composable(NavGroup.HOME) { HomeScreen(navController,innerPadding = innerPadding) }
         }
     }
 }
