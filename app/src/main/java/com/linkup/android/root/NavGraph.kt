@@ -11,6 +11,8 @@ import com.linkup.android.feature.auth.pwchange.PwChangeScreen
 import com.linkup.android.feature.auth.pwchange.VerifyScreen
 import com.linkup.android.feature.auth.signin.SignInScreen
 import com.linkup.android.feature.auth.signup.SignUpScreen
+import com.linkup.android.feature.profile.ProfileScreen
+import com.linkup.android.feature.rank.RankScreen
 
 object NavGroup {
 
@@ -19,6 +21,8 @@ object NavGroup {
     const val SignIn = "signIn"
     const val SignUp = "signUp"
     const val Send = "send"
+    const val Rank = "rank"
+    const val Profile = "profile"
 
     object Verify {
         const val route = "verify"
@@ -44,6 +48,8 @@ fun AppNavGraph(
         composable(NavGroup.SignIn) { SignInScreen(navController) }
         composable(NavGroup.SignUp) { SignUpScreen(navController) }
         composable(NavGroup.Send) { PwChangeScreen(navController) }
+        composable(NavGroup.Rank) { RankScreen() }
+        composable(NavGroup.Profile) { ProfileScreen() }
         composable(
             route = NavGroup.Verify.routeWithArg,
             arguments = listOf(
