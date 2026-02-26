@@ -32,6 +32,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.linkup.android.R
 import com.linkup.android.root.NavGroup
+import com.linkup.android.ui.components.TopBar
 import com.linkup.android.ui.theme.MainColor
 import com.linkup.android.ui.theme.SubColor
 
@@ -51,6 +52,7 @@ fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel = hi
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
+        TopBar(NavController)
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(16.dp),
@@ -118,7 +120,7 @@ private fun ActivityButton(text: String, onClick: () -> Unit) {
         ) {
             Text(text, fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Color.Black)
             Spacer(modifier = Modifier.weight(1f))
-            Image(painter = painterResource(id = R.drawable.arrow_right), contentDescription = "arrow")
+            Image(painter = painterResource(id = R.drawable.arrow_icon), contentDescription = "arrow")
         }
     }
 }

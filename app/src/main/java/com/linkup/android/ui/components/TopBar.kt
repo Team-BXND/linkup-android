@@ -17,7 +17,7 @@ import com.linkup.android.R
 import com.linkup.android.ui.theme.MainColor
 
 @Composable
-fun TopBar(navController: NavController){
+fun TopBar(navController: NavController.Companion){
     Row(
         modifier = Modifier
             .padding(horizontal = 13.dp)
