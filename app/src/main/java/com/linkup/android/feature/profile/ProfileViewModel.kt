@@ -16,6 +16,10 @@ data class ProfileState(
     val userProfile: UserProfile? = null,
     val myAnswers: List<MyAnswer> = emptyList(),
     val myQuestions: List<MyQuestion> = emptyList(),
+    val answersPage: Int = 1,
+    val questionsPage: Int = 1,
+    val hasNextAnswers: Boolean = true,
+    val hasNextQuestions: Boolean = true,
     val isLoading: Boolean = false,
     val error: String? = null
 )
@@ -30,7 +34,7 @@ class ProfileViewModel @Inject constructor(
 
     fun getProfile() {
         viewModelScope.launch {
-            _state.value = _state.value.copy(isLoading = true)
+            _state.value = _state.value.copy(isLoading = true, error = null)
             try {
                 val response = profileService.getProfile()
                 if (response.isSuccessful) {
@@ -39,66 +43,64 @@ class ProfileViewModel @Inject constructor(
                         isLoading = false
                     )
                 } else {
-                    _state.value = _state.value.copy(
-                        error = "Failed to fetch profile",
-                        isLoading = false
-                    )
+                    _state.value = _state.value.copy(error = "Failed to fetch profile", isLoading = false)
                 }
             } catch (e: Exception) {
-                _state.value = _state.value.copy(
-                    error = e.message ?: "An unexpected error occurred",
-                    isLoading = false
-                )
+                _state.value = _state.value.copy(error = e.message ?: "An unexpected error occurred", isLoading = false)
             }
         }
     }
 
-    fun getMyAnswers() {
+    fun getMyAnswers(initialFetch: Boolean = false) {
+        if (!state.value.hasNextAnswers && !initialFetch) return
+
         viewModelScope.launch {
-            _state.value = _state.value.copy(isLoading = true)
+            _state.value = _state.value.copy(isLoading = true, error = null)
+            val pageToFetch = if (initialFetch) 1 else state.value.answersPage
+
             try {
-                val response = profileService.getMyAnswers(1) // a hardcoded page
+                val response = profileService.getMyAnswers(pageToFetch)
                 if (response.isSuccessful) {
+                    val newAnswers = response.body()?.data ?: emptyList()
+                    val meta = response.body()?.meta
                     _state.value = _state.value.copy(
-                        myAnswers = response.body()?.data ?: emptyList(),
+                        myAnswers = if (initialFetch) newAnswers else state.value.myAnswers + newAnswers,
+                        answersPage = pageToFetch + 1,
+                        hasNextAnswers = meta?.hasNext ?: false,
                         isLoading = false
                     )
                 } else {
-                    _state.value = _state.value.copy(
-                        error = "Failed to fetch my answers",
-                        isLoading = false
-                    )
+                    _state.value = _state.value.copy(error = "Failed to fetch my answers", isLoading = false)
                 }
             } catch (e: Exception) {
-                _state.value = _state.value.copy(
-                    error = e.message ?: "An unexpected error occurred",
-                    isLoading = false
-                )
+                _state.value = _state.value.copy(error = e.message ?: "An unexpected error occurred", isLoading = false)
             }
         }
     }
 
-    fun getMyQuestions() {
+    fun getMyQuestions(initialFetch: Boolean = false) {
+        if (!state.value.hasNextQuestions && !initialFetch) return
+
         viewModelScope.launch {
-            _state.value = _state.value.copy(isLoading = true)
+            _state.value = _state.value.copy(isLoading = true, error = null)
+            val pageToFetch = if (initialFetch) 1 else state.value.questionsPage
+
             try {
-                val response = profileService.getMyQuestions(1) // a hardcoded page
+                val response = profileService.getMyQuestions(pageToFetch)
                 if (response.isSuccessful) {
+                    val newQuestions = response.body()?.data ?: emptyList()
+                    val meta = response.body()?.meta
                     _state.value = _state.value.copy(
-                        myQuestions = response.body()?.data ?: emptyList(),
+                        myQuestions = if (initialFetch) newQuestions else state.value.myQuestions + newQuestions,
+                        questionsPage = pageToFetch + 1,
+                        hasNextQuestions = meta?.hasNext ?: false,
                         isLoading = false
                     )
                 } else {
-                    _state.value = _state.value.copy(
-                        error = "Failed to fetch my questions",
-                        isLoading = false
-                    )
+                    _state.value = _state.value.copy(error = "Failed to fetch my questions", isLoading = false)
                 }
             } catch (e: Exception) {
-                _state.value = _state.value.copy(
-                    error = e.message ?: "An unexpected error occurred",
-                    isLoading = false
-                )
+                _state.value = _state.value.copy(error = e.message ?: "An unexpected error occurred", isLoading = false)
             }
         }
     }
