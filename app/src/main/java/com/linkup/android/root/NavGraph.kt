@@ -71,7 +71,7 @@ fun AppNavGraph(
         }
     ) { innerPadding ->
 
-        NavHost(navController = navController, startDestination = startDestination) {
+        NavHost(navController = navController, startDestination = NavGroup.HOME) {
             composable(NavGroup.SIGNIN) { SignInScreen(navController) }
             composable(NavGroup.SIGNUP) { SignUpScreen(navController) }
             composable(NavGroup.SEND) { PwChangeScreen(navController) }
