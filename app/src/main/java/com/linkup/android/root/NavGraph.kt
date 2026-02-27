@@ -50,8 +50,7 @@ object NavGroup {
 
 @Composable
 fun AppNavGraph(
-    navController: NavHostController,
-    startDestination: String = NavGroup.HOME
+    navController: NavHostController
 ) {
 
     val navBackStackEntry = navController.currentBackStackEntryAsState()
