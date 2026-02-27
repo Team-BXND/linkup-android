@@ -1,7 +1,9 @@
 package com.linkup.android.ui.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -14,28 +16,35 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.linkup.android.R
+import com.linkup.android.root.NavGroup
 import com.linkup.android.ui.theme.MainColor
 
 @Composable
-fun TopBar(navController: NavController.Companion){
+fun TopBar(navController: NavController) {
     Row(
         modifier = Modifier
-            .padding(horizontal = 13.dp)
-            .padding(top = 53.dp)
             .fillMaxWidth()
             .height(53.dp)
+            .clickable(
+                onClick = { navController.navigate(NavGroup.HOME) }
+            )
+            .padding(start = 13.dp)
     ) {
+
         Image(
             painter = painterResource(id = R.drawable.logo),
             contentDescription = "Logo",
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxHeight()
         )
+
         Text(
             text = "LINK:UP",
-            fontSize = 16.sp,
-            fontWeight = FontWeight.SemiBold,
-            color = MainColor
+            fontSize = 30.sp,
+            fontWeight = FontWeight.Bold,
+            color = MainColor,
+            modifier = Modifier
+                .fillMaxHeight()
         )
     }
 }

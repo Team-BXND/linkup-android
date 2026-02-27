@@ -31,13 +31,13 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.linkup.android.R
+import com.linkup.android.feature.auth.AuthViewModel
 import com.linkup.android.root.NavGroup
-import com.linkup.android.ui.components.TopBar
 import com.linkup.android.ui.theme.MainColor
 import com.linkup.android.ui.theme.SubColor
 
 @Composable
-fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel = hiltViewModel()) {
+fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel = hiltViewModel(), authViewModel: AuthViewModel = hiltViewModel()) {
     val state = viewModel.state.value
 
     LaunchedEffect(Unit) {
@@ -52,7 +52,6 @@ fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel = hi
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
-        TopBar(NavController)
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(16.dp),
@@ -70,7 +69,9 @@ fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel = hi
                 Spacer(modifier = Modifier.height(32.dp))
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
                     Button(
-                        onClick = { /* TODO: Logout */ },
+                        onClick = {
+                            authViewModel.logout()
+                        },
                         shape = RoundedCornerShape(10.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = SubColor),
                         modifier = Modifier.width(110.dp).height(35.dp)

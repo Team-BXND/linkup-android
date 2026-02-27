@@ -13,15 +13,16 @@ import androidx.compose.runtime.setValue
 import androidx.navigation.compose.rememberNavController
 import com.linkup.android.data.datastore.UserRepository
 import com.linkup.android.feature.auth.signin.SignInScreen
+import com.linkup.android.feature.splash.SplashScreen
 import com.linkup.android.root.AppNavGraph
+import com.linkup.android.root.NavGroup
 import com.linkup.android.ui.theme.LinkUpTheme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 enum class AppStartState {
     LOADING,
-    AUTHENTICATED,
-    UNAUTHENTICATED
+    NOLOADING
 }
 
 
@@ -49,26 +50,21 @@ class MainActivity : ComponentActivity() {
                         Log.d("TOKEN_CHECK", "AccessToken: $token")
                     }
 
-                    startState =
-                        if (token.isNullOrEmpty()) {
-                            AppStartState.UNAUTHENTICATED
-                        } else {
-                            AppStartState.AUTHENTICATED
-                        }
+                    startState = AppStartState.NOLOADING
+
+
                 }
 
                 when (startState) {
                     AppStartState.LOADING -> {
-                        // SplashScreen or Loading UI
+                        SplashScreen(navController)
                     }
 
-                    AppStartState.AUTHENTICATED -> {
+                    AppStartState.NOLOADING -> {
                         AppNavGraph(navController = navController)
                     }
 
-                    AppStartState.UNAUTHENTICATED -> {
-                        SignInScreen(navController)
-                    }
+
                 }
             }
         }

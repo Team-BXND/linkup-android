@@ -26,7 +26,7 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        val baseUrl = localProperties.getProperty("BASE_URL") ?: ""
+        val baseUrl = localProperties.getProperty("BASE_URL") ?: "https://devit.run/"
         buildConfigField("String", "BASE_URL", "\"$baseUrl\"")
     }
 
