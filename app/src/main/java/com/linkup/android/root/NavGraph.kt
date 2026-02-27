@@ -22,10 +22,8 @@ object NavGroup {
 
     const val EMAIL = "email"
 
-    const val SignIn = "signIn"
-    const val SignUp = "signUp"
-    const val Send = "send"
-    const val Rank = "rank"
+
+    const val RANK = "rank"
     const val SPLASH = "splash"
 
     const val SIGNIN = "signIn"
@@ -85,15 +83,15 @@ fun AppNavGraph(
                     }
                 )
             ) { backStackEntry ->
-    NavHost(navController = navController, startDestination = NavGroup.SignUp) {
-        composable(NavGroup.SignIn) { SignInScreen(navController) }
-        composable(NavGroup.SignUp) { SignUpScreen(navController) }
-        composable(NavGroup.Send) { PwChangeScreen(navController) }
-        composable(NavGroup.Rank) { RankScreen() }
+    NavHost(navController = navController, startDestination = NavGroup.SIGNUP) {
+        composable(NavGroup.SIGNIN) { SignInScreen(navController) }
+        composable(NavGroup.SIGNUP) { SignUpScreen(navController) }
+        composable(NavGroup.SEND) { PwChangeScreen(navController) }
+        composable(NavGroup.RANK) { RankScreen(navController, innerpadding = innerPadding) }
         composable(
-            route = NavGroup.Verify.routeWithArg,
+            route = NavGroup.Verify.ROUTE_WITH_ARG,
             arguments = listOf(
-                navArgument(NavGroup.Email) {
+                navArgument(NavGroup.EMAIL) {
                     type = NavType.StringType
                 }
             )
@@ -131,4 +129,4 @@ fun AppNavGraph(
             composable(NavGroup.HOME) { HomeScreen(navController,innerPadding = innerPadding) }
         }
     }
-}
+}}}
