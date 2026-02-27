@@ -21,13 +21,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.linkup.android.R
 import com.linkup.android.network.profile.MyAnswer
 import com.linkup.android.network.profile.MyQuestion
+import com.linkup.android.ui.components.TopBar
 import com.linkup.android.ui.theme.SubColor
 
 enum class ActivityType(val rawValue: String) {
@@ -36,7 +37,7 @@ enum class ActivityType(val rawValue: String) {
 }
 
 @Composable
-fun UserActivityScreen(activityType: ActivityType, viewModel: ProfileViewModel = hiltViewModel()) {
+fun UserActivityScreen(navController: NavController, activityType: ActivityType, viewModel: ProfileViewModel = hiltViewModel()) {
 
     LaunchedEffect(activityType) {
         when (activityType) {
@@ -46,7 +47,8 @@ fun UserActivityScreen(activityType: ActivityType, viewModel: ProfileViewModel =
     }
 
     val state = viewModel.state.value
-
+    Column() {
+        TopBar(navController = navController)
     Card(
         modifier = Modifier.fillMaxSize().padding(16.dp),
         shape = RoundedCornerShape(16.dp),
@@ -77,7 +79,7 @@ fun UserActivityScreen(activityType: ActivityType, viewModel: ProfileViewModel =
                 }
             }
         }
-    }
+    }}
 }
 
 @Composable
@@ -131,10 +133,4 @@ private fun CategoryChip(category: String) {
             color = SubColor
         )
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun UserActivityScreenPreview() {
-    UserActivityScreen(activityType = ActivityType.QUESTION)
 }

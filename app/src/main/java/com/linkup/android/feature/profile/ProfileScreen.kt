@@ -33,6 +33,7 @@ import androidx.navigation.NavController
 import com.linkup.android.R
 import com.linkup.android.feature.auth.AuthViewModel
 import com.linkup.android.root.NavGroup
+import com.linkup.android.ui.components.TopBar
 import com.linkup.android.ui.theme.MainColor
 import com.linkup.android.ui.theme.SubColor
 
@@ -52,6 +53,7 @@ fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel = hi
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
+        TopBar(navController)
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(16.dp),

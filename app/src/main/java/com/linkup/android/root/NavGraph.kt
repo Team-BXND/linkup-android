@@ -63,7 +63,7 @@ fun AppNavGraph(navController: NavHostController) {
     val navBackStackEntry = navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry.value?.destination?.route
 
-    val bottomBarRoutes = listOf(NavGroup.HOME, NavGroup.RANK, NavGroup.PROFILE)
+    val bottomBarRoutes = listOf(NavGroup.HOME, NavGroup.RANK, NavGroup.PROFILE, NavGroup.MOVETOAUTH)
 
     Scaffold(
         bottomBar = {
@@ -73,8 +73,8 @@ fun AppNavGraph(navController: NavHostController) {
         }
     ) { innerPadding ->
         NavHost(
-            navController = navController, 
-            startDestination = NavGroup.HOME, 
+            navController = navController,
+            startDestination = NavGroup.HOME,
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(NavGroup.SIGNIN) { SignInScreen(navController) }
@@ -108,7 +108,7 @@ fun AppNavGraph(navController: NavHostController) {
             ) { backStackEntry ->
                 val typeString = backStackEntry.arguments?.getString(NavGroup.ACTIVITY_TYPE).orEmpty()
                 val activityType = ActivityType.valueOf(typeString)
-                UserActivityScreen(activityType = activityType)
+                UserActivityScreen(activityType = activityType, navController = navController)
             }
         }
     }

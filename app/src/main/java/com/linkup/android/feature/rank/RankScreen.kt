@@ -44,7 +44,7 @@ fun RankScreen(navController: NavController,innerpadding: PaddingValues , viewMo
         viewModel.getRank()
     }
 
-    Column (Modifier.fillMaxSize().padding(innerpadding)){
+    Column (Modifier.fillMaxSize()){
         TopBar(navController)
         Box(
             modifier = Modifier
