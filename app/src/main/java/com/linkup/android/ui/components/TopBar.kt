@@ -29,6 +29,7 @@ fun TopBar(navController: NavController) {
             .clickable(
                 onClick = { navController.navigate(NavGroup.HOME) }
             )
+            .padding(start = 13.dp)
     ) {
 
         Image(
