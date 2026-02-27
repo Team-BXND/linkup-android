@@ -51,6 +51,7 @@ object NavGroup {
 @Composable
 fun AppNavGraph(
     navController: NavHostController,
+    startDestination: String = NavGroup.HOME
 ) {
 
     val navBackStackEntry = navController.currentBackStackEntryAsState()
@@ -70,11 +71,11 @@ fun AppNavGraph(
         }
     ) { innerPadding ->
 
-        NavHost(navController = navController, startDestination = NavGroup.HOME) {
+        NavHost(navController = navController, startDestination = startDestination) {
             composable(NavGroup.SIGNIN) { SignInScreen(navController) }
             composable(NavGroup.SIGNUP) { SignUpScreen(navController) }
             composable(NavGroup.SEND) { PwChangeScreen(navController) }
-            composable(NavGroup.SPLASH){ SplashScreen(navController) }
+            composable(NavGroup.SPLASH) { SplashScreen(navController) }
             composable(
                 route = NavGroup.Verify.ROUTE_WITH_ARG,
                 arguments = listOf(
@@ -83,20 +84,6 @@ fun AppNavGraph(
                     }
                 )
             ) { backStackEntry ->
-    NavHost(navController = navController, startDestination = NavGroup.SIGNUP) {
-        composable(NavGroup.SIGNIN) { SignInScreen(navController) }
-        composable(NavGroup.SIGNUP) { SignUpScreen(navController) }
-        composable(NavGroup.SEND) { PwChangeScreen(navController) }
-        composable(NavGroup.RANK) { RankScreen(navController, innerpadding = innerPadding) }
-        composable(
-            route = NavGroup.Verify.ROUTE_WITH_ARG,
-            arguments = listOf(
-                navArgument(NavGroup.EMAIL) {
-                    type = NavType.StringType
-                }
-            )
-        ) { backStackEntry ->
-
                 val email = backStackEntry.arguments
                     ?.getString(NavGroup.EMAIL)
                     .orEmpty()
@@ -106,7 +93,6 @@ fun AppNavGraph(
                     email = email
                 )
             }
-
             composable(
                 route = NavGroup.ChangePw.ROUTE_WITH_ARG,
                 arguments = listOf(
@@ -115,7 +101,6 @@ fun AppNavGraph(
                     }
                 )
             ) { backStackEntry ->
-
                 val email = backStackEntry.arguments
                     ?.getString(NavGroup.EMAIL)
                     .orEmpty()
@@ -125,8 +110,6 @@ fun AppNavGraph(
                     email = email
                 )
             }
-
-            composable(NavGroup.HOME) { HomeScreen(navController,innerPadding = innerPadding) }
-        }
-    }
-}}}
+            composable(NavGroup.HOME) { HomeScreen(navController, innerPadding = innerPadding) }
+            composable(NavGroup.RANK) { RankScreen(navController, innerpadding = innerPadding) }
+        }}}

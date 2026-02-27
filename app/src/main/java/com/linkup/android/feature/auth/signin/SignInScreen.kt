@@ -40,7 +40,7 @@ fun SignInScreen(navController: NavController) {
 
     LaunchedEffect(uiState.isSuccess) {
         if (uiState.isSuccess) {
-            navController.navigate(NavGroup.SEND) {
+            navController.navigate(NavGroup.RANK) {
                 popUpTo(NavGroup.SIGNIN) { inclusive = true }
             }
         }
