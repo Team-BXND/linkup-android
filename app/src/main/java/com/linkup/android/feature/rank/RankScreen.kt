@@ -37,20 +37,28 @@ import com.linkup.android.ui.components.TopBar
 import com.linkup.android.ui.theme.MainColor
 
 @Composable
-fun RankScreen(navController: NavController,innerpadding: PaddingValues , viewModel: RankViewModel = hiltViewModel()) {
+fun RankScreen(
+    navController: NavController,
+    innerPadding: PaddingValues ,
+    viewModel: RankViewModel = hiltViewModel()
+) {
     val state = viewModel.state.value
 
     LaunchedEffect(Unit) {
         viewModel.getRank()
     }
 
-    Column (Modifier.fillMaxSize()){
+    Column (
+        Modifier
+            .fillMaxSize()
+            .padding(innerPadding)
+            .background(Color.White)
+    ){
         TopBar(navController)
         Box(
             modifier = Modifier
                 .weight(1f)
                 .fillMaxWidth()
-                .background(Color.White)
         ) {
             if (state.isLoading) {
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
@@ -69,7 +77,10 @@ fun RankScreen(navController: NavController,innerpadding: PaddingValues , viewMo
 @Composable
 fun RankingContent(rankingList: List<RankResponse>) {
     if (rankingList.isEmpty()) {
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
             Text("No ranking data available.")
         }
         return
@@ -161,7 +172,6 @@ fun TopCard(toplist: List<RankResponse>) {
 fun BottomCard(bottomlist: List<RankResponse>) {
     LazyColumn(
         Modifier
-            .padding(horizontal = 32.dp)
             .shadow(3.dp, RoundedCornerShape(12.dp))
             .background(Color.White)
             .fillMaxWidth()

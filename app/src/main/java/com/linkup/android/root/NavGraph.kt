@@ -1,9 +1,7 @@
 package com.linkup.android.root
 
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -11,7 +9,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.navArgument
 import com.linkup.android.feature.auth.pwchange.ChangePwScreen
-import com.linkup.android.feature.auth.pwchange.PwChangeScreen
 import com.linkup.android.feature.auth.pwchange.VerifyScreen
 import com.linkup.android.feature.auth.signin.SignInScreen
 import com.linkup.android.feature.auth.signup.SignUpScreen
@@ -20,7 +17,6 @@ import com.linkup.android.feature.post.PostDetailScreen
 import com.linkup.android.feature.qna.QnaScreen
 import com.linkup.android.feature.profile.ActivityType
 import com.linkup.android.feature.profile.MoveToAuthScreen
-import com.linkup.android.feature.profile.ProfileScreen
 import com.linkup.android.feature.profile.UserActivityScreen
 import com.linkup.android.feature.rank.RankScreen
 import com.linkup.android.feature.splash.SplashScreen
@@ -122,7 +118,7 @@ fun AppNavGraph(
             }
 
             composable(NavGroup.SEND) {
-                PwChangeScreen(navController)
+                ChangePwScreen(navController)
             }
 
             composable(NavGroup.HOME) {
@@ -146,6 +142,10 @@ fun AppNavGraph(
 
             composable(NavGroup.WRITE) {
                 WriteScreen(navController, innerPadding)
+            }
+
+            composable(NavGroup.MOVETOAUTH) {
+                MoveToAuthScreen(navController,innerPadding)
             }
 
             composable(

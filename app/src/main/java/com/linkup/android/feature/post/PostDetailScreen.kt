@@ -243,27 +243,30 @@ fun PostDetailScreen(
                     fontSize = 19.sp
                 )
 
-                Row(
-                    modifier = Modifier
-                        .padding(top = 8.dp)
-                ) {
-                    CustomTextField(
-                        value = comment,
-                        onValueChange = { comment = it },
-                        placeHolder = "답변을 입력해주세요.",
-                        modifier = Modifier.weight(1f)
-                    )
+                if (!post.isAuthor) {
 
-                    Spacer(modifier = Modifier.width(8.dp))
+                    Row(
+                        modifier = Modifier
+                            .padding(top = 8.dp)
+                    ) {
+                        CustomTextField(
+                            value = comment,
+                            onValueChange = { comment = it },
+                            placeHolder = "답변을 입력해주세요.",
+                            modifier = Modifier.weight(1f)
+                        )
 
-                    SendButton(
-                        backgroundColor = MainColor,
-                        mainColor = Color.White,
-                        onClick = {
-                            Log.d("POST", "click")
-                            viewModel.writeComment(postId, comment)
-                        }
-                    )
+                        Spacer(modifier = Modifier.width(8.dp))
+
+                        SendButton(
+                            backgroundColor = MainColor,
+                            mainColor = Color.White,
+                            onClick = {
+                                Log.d("POST", "click")
+                                viewModel.writeComment(postId, comment)
+                            }
+                        )
+                    }
                 }
             }
 
@@ -309,7 +312,6 @@ fun PostDetailScreen(
                             color = Color.Gray
                         )
 
-                        // 글 작성자가 댓글을 채택할 수 있는 경우만 버튼 표시
                         if (canAccept && !c.isAccepted) {
                             CustomButton(
                                 text = "채택하기",
