@@ -1,6 +1,6 @@
 package com.linkup.android.network.qna
 
-import com.google.gson.annotations.SerializedName
+import com.linkup.android.network.Category
 
 data class QnaResponse(
     val data: List<QnaItemResponse>,
@@ -18,13 +18,6 @@ data class QnaItemResponse(
     val commentCount: Int,
     val createdAt: String
 )
-
-enum class Category {
-    @SerializedName("all") ALL,
-    @SerializedName("code") CODE,
-    @SerializedName("school") SCHOOL,
-    @SerializedName("project") PROJECT
-}
 
 
 data class Meta(

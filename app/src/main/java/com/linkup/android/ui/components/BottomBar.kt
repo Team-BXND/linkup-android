@@ -3,6 +3,8 @@ package com.linkup.android.ui.components
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.HelpOutline
+import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -46,28 +48,27 @@ fun BottomBar(
             label = { Text("Home") }
         )
 
-//        NavigationBarItem(
-//            selected = currentRoute == NavGroup,
-//            onClick = { navController.navigate(NavGroup) },
-//            icon = {
-//                Icon(
-//                    imageVector = Icons.Outlined.QuestionMark,
-//                    contentDescription = "QnA"
-//                )
-//            },
-//            label = { Text("QnA") }
-//        )
+        NavigationBarItem(
+            selected = currentRoute == NavGroup.QNA,
+            onClick = { navController.navigate(NavGroup.QNA) },
+            icon = {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Outlined.HelpOutline,
+                    contentDescription = "QnA"
+                )
+            },
+            label = { Text("QnA") }
+        )
 
-//        NavigationBarItem(
-//            selected = currentRoute == NavGroup.Rank
-//            onClick = { navController.navigate(NavGroup)},
-//            icon = {
-//                Icon(
-//                    imageVector = Icons.Default.BarChart,
-//                    contentDescription = "랭킹")
-//            },
-//            label = { Text("Rank") }
-//        )
-//    }
+        NavigationBarItem(
+            selected = currentRoute == NavGroup.RANK,
+            onClick = { navController.navigate(NavGroup.RANK)},
+            icon = {
+                Icon(
+                    imageVector = Icons.Default.BarChart,
+                    contentDescription = "랭킹")
+            },
+            label = { Text("Rank") }
+        )
     }
 }

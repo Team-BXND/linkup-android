@@ -6,6 +6,8 @@ import com.linkup.android.network.auth.signIn.SignInService
 import com.linkup.android.network.auth.signUp.SignUpService
 import com.linkup.android.network.client.AuthInterceptor
 import com.linkup.android.network.client.TokenAuthenticator
+import com.linkup.android.network.file.UploadService
+import com.linkup.android.network.post.PostService
 import com.linkup.android.network.rank.RankService
 import com.linkup.android.network.qna.QnaService
 import dagger.Module
@@ -51,7 +53,7 @@ object NetworkModule {
         okHttpClient: OkHttpClient
     ): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(LinkUpUrl.baseUrl)
+            .baseUrl(LinkUpUrl.BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -88,6 +90,20 @@ object NetworkModule {
     ): QnaService =
         retrofit.create(QnaService::class.java)
 
+    @Provides
+    @Singleton
+    fun providePostService(
+        retrofit: Retrofit
+    ): PostService =
+        retrofit.create(PostService::class.java)
+
+    @Provides
+    @Singleton
+    fun UploadService(
+        retrofit: Retrofit
+    ): UploadService =
+        retrofit.create(UploadService::class.java)
+
 
 
     @Provides
@@ -108,7 +124,7 @@ object NetworkModule {
         @Named("refreshClient") okHttpClient: OkHttpClient
     ): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(LinkUpUrl.baseUrl)
+            .baseUrl(LinkUpUrl.BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()

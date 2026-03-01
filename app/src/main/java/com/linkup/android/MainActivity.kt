@@ -15,6 +15,7 @@ import com.linkup.android.data.datastore.UserRepository
 import com.linkup.android.feature.auth.signin.SignInScreen
 import com.linkup.android.feature.splash.SplashScreen
 import com.linkup.android.root.AppNavGraph
+import com.linkup.android.root.NavGroup
 import com.linkup.android.ui.theme.LinkUpTheme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -34,8 +35,6 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        enableEdgeToEdge()
 
         setContent {
             LinkUpTheme {
@@ -60,15 +59,15 @@ class MainActivity : ComponentActivity() {
 
                 when (startState) {
                     AppStartState.LOADING -> {
-                        SplashScreen(navController)
+                        AppNavGraph(navController = navController, startDestination = NavGroup.SPLASH)
                     }
 
                     AppStartState.AUTHENTICATED -> {
-                        AppNavGraph(navController = navController)
+                        AppNavGraph(navController = navController, startDestination = NavGroup.WRITE)
                     }
 
                     AppStartState.UNAUTHENTICATED -> {
-                        SignInScreen(navController)
+                        AppNavGraph(navController = navController, startDestination = NavGroup.SIGNIN)
                     }
                 }
             }

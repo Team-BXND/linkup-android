@@ -6,12 +6,12 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface QnaService {
-    @GET(LinkUpUrl.Popular.hot)
+    @GET(LinkUpUrl.Popular.HOT)
     suspend fun hot(
         @Query("page") page: Int?
     ): Response<QnaResponse>
 
-    @GET(LinkUpUrl.Popular.popular)
+    @GET(LinkUpUrl.Post.POST)
     suspend fun popular(
         @Query("page") page: Int?
     ): Response<QnaResponse>

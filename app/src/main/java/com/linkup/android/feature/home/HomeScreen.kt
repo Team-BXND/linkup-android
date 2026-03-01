@@ -1,8 +1,6 @@
 package com.linkup.android.feature.home
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.ScrollableState
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -11,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
@@ -48,14 +45,15 @@ fun HomeScreen(
     var selectedIndex by remember { mutableStateOf(0) }
 
     LaunchedEffect(Unit) {
-        viewModel.loadTop3Hot()
+        viewModel.loadTop5Hot()
     }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(innerPadding)
             .background(Color.White)
+            .padding(innerPadding)
+            .padding(horizontal = 13.dp)
     ) {
         TopBar(navController)
 
@@ -63,7 +61,7 @@ fun HomeScreen(
             modifier = Modifier
                 .weight(1f)
                 .padding(top = 24.dp)
-                .padding(horizontal = 33.dp)
+                .padding(horizontal = 20.dp)
                 .background(Color.White, shape = RoundedCornerShape(16.dp)),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.Start
@@ -77,6 +75,7 @@ fun HomeScreen(
             )
 
             ImagePager(
+                navController,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(200.dp)
@@ -111,6 +110,7 @@ fun HomeScreen(
                             isSelected = selectedIndex == index,
                             onClick = {
                                 selectedIndex = index
+                                navController.navigate("detail/${item.id}")
                             }
                         )
                     }
