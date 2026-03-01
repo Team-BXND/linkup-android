@@ -22,8 +22,7 @@ import javax.inject.Inject
 
 enum class AppStartState {
     LOADING,
-    AUTHENTICATED,
-    UNAUTHENTICATED
+    NOLOADING
 }
 
 
@@ -36,7 +35,6 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        enableEdgeToEdge()
 
         setContent {
             LinkUpTheme {
@@ -51,12 +49,9 @@ class MainActivity : ComponentActivity() {
                         Log.d("TOKEN_CHECK", "AccessToken: $token")
                     }
 
-                    startState =
-                        if (token.isNullOrEmpty()) {
-                            AppStartState.UNAUTHENTICATED
-                        } else {
-                            AppStartState.AUTHENTICATED
-                        }
+                    startState = AppStartState.NOLOADING
+
+
                 }
 
                 when (startState) {
@@ -64,13 +59,11 @@ class MainActivity : ComponentActivity() {
                         SplashScreen(navController)
                     }
 
-                    AppStartState.AUTHENTICATED -> {
+                    AppStartState.NOLOADING -> {
                         AppNavGraph(navController = navController)
                     }
 
-                    AppStartState.UNAUTHENTICATED -> {
-                        SignInScreen(navController)
-                    }
+
                 }
             }
         }
