@@ -1,7 +1,9 @@
 package com.linkup.android.root
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -13,10 +15,14 @@ import com.linkup.android.feature.auth.pwchange.PwChangeScreen
 import com.linkup.android.feature.auth.pwchange.VerifyScreen
 import com.linkup.android.feature.auth.signin.SignInScreen
 import com.linkup.android.feature.auth.signup.SignUpScreen
-import com.linkup.android.feature.rank.RankScreen
 import com.linkup.android.feature.home.HomeScreen
 import com.linkup.android.feature.post.PostDetailScreen
 import com.linkup.android.feature.qna.QnaScreen
+import com.linkup.android.feature.profile.ActivityType
+import com.linkup.android.feature.profile.MoveToAuthScreen
+import com.linkup.android.feature.profile.ProfileScreen
+import com.linkup.android.feature.profile.UserActivityScreen
+import com.linkup.android.feature.rank.RankScreen
 import com.linkup.android.feature.splash.SplashScreen
 import com.linkup.android.feature.write.WriteScreen
 import com.linkup.android.network.Category
@@ -26,11 +32,15 @@ object NavGroup {
 
     const val EMAIL = "email"
     const val RANK = "rank"
-    const val SPLASH = "splash"
+    const val ACTIVITY_TYPE = "activityType"
 
+    const val SPLASH = "splash"
     const val SIGNIN = "signIn"
     const val SIGNUP = "signUp"
     const val SEND = "send"
+    const val PROFILE = "profile"
+    const val MOVETOAUTH = "movetoauth"
+
 
     object Verify {
         const val ROUTE = "verify"
@@ -59,6 +69,11 @@ object NavGroup {
     const val QNA_WITH_CATEGORY = "qna/{category}"
 
     fun createQnaRoute(category: String) = "qna/$category"
+    object UserActivity {
+        const val ROUTE = "userActivity"
+        const val ROUTE_WITH_ARG = "$ROUTE/{$ACTIVITY_TYPE}"
+        fun createRoute(activityType: ActivityType) = "$ROUTE/${activityType.name}"
+    }
 }
 
 
@@ -76,7 +91,9 @@ fun AppNavGraph(
         NavGroup.RANK,
         NavGroup.QNA,
         NavGroup.DETAIL,
-        NavGroup.WRITE
+        NavGroup.WRITE,
+        NavGroup.PROFILE,
+        NavGroup.MOVETOAUTH
     )
 
     Scaffold(
@@ -124,7 +141,7 @@ fun AppNavGraph(
             }
 
             composable(NavGroup.RANK) {
-                RankScreen(navController)
+                RankScreen(navController, innerPadding)
             }
 
             composable(NavGroup.WRITE) {
@@ -163,22 +180,12 @@ fun AppNavGraph(
             }
 
             composable(
-                route = NavGroup.ChangePw.ROUTE_WITH_ARG,
-                arguments = listOf(
-                    navArgument(NavGroup.EMAIL) {
-                        type = NavType.StringType
-                    }
-                )
+                route = NavGroup.UserActivity.ROUTE_WITH_ARG,
+                arguments = listOf(navArgument(NavGroup.ACTIVITY_TYPE) { type = NavType.StringType })
             ) { backStackEntry ->
-
-                val email = backStackEntry.arguments
-                    ?.getString(NavGroup.EMAIL)
-                    .orEmpty()
-
-                ChangePwScreen(
-                    navController = navController,
-                    email = email
-                )
+                val typeString = backStackEntry.arguments?.getString(NavGroup.ACTIVITY_TYPE).orEmpty()
+                val activityType = ActivityType.valueOf(typeString)
+                UserActivityScreen(activityType = activityType, navController = navController)
             }
 
             composable(

@@ -55,7 +55,7 @@ fun HomeScreen(
             .padding(innerPadding)
             .padding(horizontal = 13.dp)
     ) {
-        TopBar(navController)
+        TopBar(navController = navController)
 
         Column(
             modifier = Modifier

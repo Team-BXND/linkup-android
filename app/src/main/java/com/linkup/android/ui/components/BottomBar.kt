@@ -6,6 +6,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.HelpOutline
 import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -14,18 +15,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.linkup.android.feature.auth.AuthViewModel
 import com.linkup.android.root.NavGroup
 
 @Composable
 fun BottomBar(
     navController: NavController,
+    authViewModel: AuthViewModel = hiltViewModel()
 ) {
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
-
+    val isLoggedIn = authViewModel.isLoggedIn
 
     NavigationBar(
         modifier = Modifier.height(64.dp),
@@ -59,16 +63,46 @@ fun BottomBar(
             },
             label = { Text("QnA") }
         )
-
         NavigationBarItem(
             selected = currentRoute == NavGroup.RANK,
-            onClick = { navController.navigate(NavGroup.RANK)},
+            onClick = {
+                navController.navigate(NavGroup.RANK) {
+                    popUpTo(navController.graph.startDestinationId)
+                    launchSingleTop = true
+                }
+            },
             icon = {
                 Icon(
                     imageVector = Icons.Default.BarChart,
-                    contentDescription = "랭킹")
+                    contentDescription = "Rank"
+
+                )
+            } ,
+            label = {Text("Rank")}
+        )
+
+        NavigationBarItem(
+            selected = currentRoute == NavGroup.PROFILE,
+            onClick = {
+                if (!isLoggedIn) {
+                    navController.navigate(NavGroup.PROFILE) {
+                        popUpTo(navController.graph.startDestinationId)
+                        launchSingleTop = true
+                    }
+                } else {
+                    navController.navigate(NavGroup.MOVETOAUTH) {
+                        popUpTo(navController.graph.startDestinationId)
+                        launchSingleTop = true
+                    }
+                }
             },
-            label = { Text("Rank") }
+            icon = {
+                Icon(
+                    imageVector = Icons.Default.Person,
+                    contentDescription = "profile"
+                )
+            },
+            label = {Text("Profile")}
         )
     }
 }

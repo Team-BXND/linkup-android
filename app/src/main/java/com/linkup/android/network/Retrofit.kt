@@ -9,6 +9,7 @@ import com.linkup.android.network.client.TokenAuthenticator
 import com.linkup.android.network.file.UploadService
 import com.linkup.android.network.post.PostService
 import com.linkup.android.network.rank.RankService
+import com.linkup.android.network.profile.ProfileService
 import com.linkup.android.network.qna.QnaService
 import dagger.Module
 import dagger.Provides
@@ -87,8 +88,13 @@ object NetworkModule {
     @Singleton
     fun provideQnaService(
         retrofit: Retrofit
-    ): QnaService =
-        retrofit.create(QnaService::class.java)
+    ): QnaService = retrofit.create(QnaService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideProfileService(
+        retrofit: Retrofit
+    ): ProfileService = retrofit.create(ProfileService::class.java)
 
     @Provides
     @Singleton

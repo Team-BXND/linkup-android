@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -36,7 +37,7 @@ import com.linkup.android.ui.components.TopBar
 import com.linkup.android.ui.theme.MainColor
 
 @Composable
-fun RankScreen(navController: NavController, viewModel: RankViewModel = hiltViewModel()) {
+fun RankScreen(navController: NavController,innerpadding: PaddingValues , viewModel: RankViewModel = hiltViewModel()) {
     val state = viewModel.state.value
 
     LaunchedEffect(Unit) {
