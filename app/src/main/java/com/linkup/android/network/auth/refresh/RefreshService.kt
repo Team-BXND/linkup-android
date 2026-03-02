@@ -7,6 +7,6 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface RefreshService {
-    @POST(LinkUpUrl.Auth.refresh)
+    @POST(LinkUpUrl.Auth.REFRESH)
     suspend fun refresh(@Body request: RefreshRequest): Response<BaseResponse<RefreshResponse>>
 }

@@ -45,14 +45,15 @@ fun HomeScreen(
     var selectedIndex by remember { mutableStateOf(0) }
 
     LaunchedEffect(Unit) {
-        viewModel.loadTop3Hot()
+        viewModel.loadTop5Hot()
     }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(innerPadding)
             .background(Color.White)
+            .padding(innerPadding)
+            .padding(horizontal = 13.dp)
     ) {
         TopBar(navController = navController)
 
@@ -60,7 +61,7 @@ fun HomeScreen(
             modifier = Modifier
                 .weight(1f)
                 .padding(top = 24.dp)
-                .padding(horizontal = 33.dp)
+                .padding(horizontal = 20.dp)
                 .background(Color.White, shape = RoundedCornerShape(16.dp)),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.Start
@@ -74,6 +75,7 @@ fun HomeScreen(
             )
 
             ImagePager(
+                navController,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(200.dp)
@@ -108,6 +110,7 @@ fun HomeScreen(
                             isSelected = selectedIndex == index,
                             onClick = {
                                 selectedIndex = index
+                                navController.navigate("detail/${item.id}")
                             }
                         )
                     }

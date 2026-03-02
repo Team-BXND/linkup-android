@@ -32,7 +32,6 @@ fun SplashScreen(
             .background(Color.White)
     ) {
 
-        // 🔹 가운데 로고 영역
         Column(
             modifier = Modifier.align(Alignment.Center),
             horizontalAlignment = Alignment.CenterHorizontally
