@@ -54,46 +54,61 @@ fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel = hi
         verticalArrangement = Arrangement.Top
     ) {
         TopBar(navController)
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(16.dp),
-            colors = CardDefaults.cardColors(containerColor = Color.White),
-            elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
-        ) {
-            Column(modifier = Modifier.padding(16.dp)) {
-                Text("프로필", fontSize = 20.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(bottom = 24.dp))
-                state.userProfile?.let {
-                    InfoItem("닉네임", it.username)
-                    InfoItem("이메일", it.email)
-                    InfoItem("답변자 순위", "${it.ranking}위")
-                    InfoItem("포인트", "${it.point} P")
-                }
-                Spacer(modifier = Modifier.height(32.dp))
-                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-                    Button(
-                        onClick = {
-                            authViewModel.logout()
-                        },
-                        shape = RoundedCornerShape(10.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = SubColor),
-                        modifier = Modifier.width(110.dp).height(35.dp)
-                    ) {
-                        Text("로그아웃", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Medium)
+        
+        when {
+            state.isLoading -> {
+                Text("로딩 중...", modifier = Modifier.padding(top = 50.dp))
+            }
+            state.error != null -> {
+                Text("프로필을 불러오지 못했습니다", modifier = Modifier.padding(top = 50.dp), color = Color.Red)
+            }
+            state.userProfile != null -> {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(16.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color.White),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
+                ) {
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Text("프로필", fontSize = 20.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(bottom = 24.dp))
+                        InfoItem("닉네임", state.userProfile.username)
+                        InfoItem("이메일", state.userProfile.email)
+                        InfoItem("답변자 순위", "${state.userProfile.ranking}위")
+                        InfoItem("포인트", "${state.userProfile.point} P")
+                        Spacer(modifier = Modifier.height(32.dp))
+                        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
+                            Button(
+                                onClick = {
+                                    authViewModel.logout()
+                                    navController.navigate(NavGroup.SIGNIN) {
+                                        popUpTo(NavGroup.PROFILE) { inclusive = true }
+                                    }
+                                },
+                                shape = RoundedCornerShape(10.dp),
+                                colors = ButtonDefaults.buttonColors(containerColor = SubColor),
+                                modifier = Modifier.width(110.dp).height(35.dp)
+                            ) {
+                                Text("로그아웃", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Medium)
+                            }
+                        }
                     }
                 }
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                ActivityButton(text = "내 답변") {
+                    navController.navigate(NavGroup.UserActivity.createRoute(ActivityType.ANSWER))
+                }
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                ActivityButton(text = "내 질문") {
+                    navController.navigate(NavGroup.UserActivity.createRoute(ActivityType.QUESTION))
+                }
             }
-        }
-
-        Spacer(modifier = Modifier.height(20.dp))
-
-        ActivityButton(text = "내 답변") {
-            navController.navigate(NavGroup.UserActivity.createRoute(ActivityType.ANSWER))
-        }
-
-        Spacer(modifier = Modifier.height(20.dp))
-
-        ActivityButton(text = "내 질문") {
-            navController.navigate(NavGroup.UserActivity.createRoute(ActivityType.QUESTION))
+            else -> {
+                Text("프로필 정보가 없습니다", modifier = Modifier.padding(top = 50.dp))
+            }
         }
     }
 }

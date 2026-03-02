@@ -26,6 +26,13 @@ class AuthViewModel @Inject constructor(
         }
     }
 
+    fun updateLoginState() {
+        viewModelScope.launch {
+            userRepository.loadAccessToken()
+            isLoggedIn = userRepository.getCachedAccessToken() != null
+        }
+    }
+
     fun logout() {
         viewModelScope.launch {
             userRepository.clearTokens()

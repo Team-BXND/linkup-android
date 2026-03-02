@@ -73,7 +73,7 @@ fun BottomBar(
         NavigationBarItem(
             selected = currentRoute == NavGroup.PROFILE,
             onClick = {
-                if (!isLoggedIn) {
+                if (isLoggedIn) {
                     navController.navigate(NavGroup.PROFILE) {
                         popUpTo(navController.graph.startDestinationId)
                         launchSingleTop = true
