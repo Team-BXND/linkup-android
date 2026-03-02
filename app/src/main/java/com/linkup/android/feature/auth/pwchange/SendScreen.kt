@@ -31,7 +31,7 @@ fun isValidEmail(email: String): Boolean {
 }
 
 @Composable
-fun PwChangeScreen(navController: NavController) {
+fun ChangePwScreen(navController: NavController) {
 
     val viewModel: ChangePwViewModel = hiltViewModel()
     val uiState = viewModel.uiState

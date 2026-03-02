@@ -1,3 +1,4 @@
+import org.gradle.kotlin.dsl.implementation
 import java.util.Properties
 
 plugins {
@@ -53,6 +54,18 @@ android {
 }
 
 dependencies {
+    implementation("com.github.jeziellago:compose-markdown:0.3.0")
+
+
+    implementation("io.noties.markwon:core:4.6.2")
+    implementation("io.noties.markwon:image-coil:4.6.2")
+    implementation("io.coil-kt:coil:2.6.0")
+
+    //paging
+    implementation("androidx.paging:paging-runtime-ktx:3.2.1")
+    implementation("androidx.paging:paging-compose:3.2.1")
+
+    // icon
     implementation(libs.androidx.compose.material.icons.extended)
 
     // datastore
@@ -74,6 +87,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation (libs.hilt.android)
+    implementation(libs.androidx.compose.foundation.layout)
     kapt (libs.hilt.compiler)
 
     implementation(libs.androidx.core.ktx)

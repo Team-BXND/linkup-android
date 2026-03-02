@@ -9,6 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -20,7 +21,8 @@ fun CustomButton(
     onClick: () -> Unit,
     border: Color,
     modifier: Modifier = Modifier,
-    enabled: Boolean = true
+    enabled: Boolean = true,
+    fontSize: TextUnit = 24.sp
 ) {
     Button(
         onClick = onClick,
@@ -42,7 +44,7 @@ fun CustomButton(
     ) {
         Text(
             text = text,
-            fontSize = 24.sp,
+            fontSize = fontSize
         )
     }
 }

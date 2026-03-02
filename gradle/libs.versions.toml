@@ -17,6 +17,7 @@ loggingInterceptor = "5.3.2"
 navigationCompose = "2.9.6"
 okhttp = "5.3.2"
 retrofit = "3.0.0"
+foundationLayout = "1.10.3"
 
 [libraries]
 androidx-compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
@@ -45,6 +46,7 @@ androidx-compose-material3 = { group = "androidx.compose.material3", name = "mat
 logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "loggingInterceptor" }
 okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+androidx-compose-foundation-layout = { group = "androidx.compose.foundation", name = "foundation-layout", version.ref = "foundationLayout" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

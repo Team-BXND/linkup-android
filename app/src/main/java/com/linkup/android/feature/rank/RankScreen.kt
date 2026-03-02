@@ -5,12 +5,15 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -35,20 +38,28 @@ import com.linkup.android.ui.components.TopBar
 import com.linkup.android.ui.theme.MainColor
 
 @Composable
-fun RankScreen(navController: NavController, viewModel: RankViewModel = hiltViewModel()) {
+fun RankScreen(
+    navController: NavController,
+    innerPadding: PaddingValues ,
+    viewModel: RankViewModel = hiltViewModel()
+) {
     val state = viewModel.state.value
 
     LaunchedEffect(Unit) {
         viewModel.getRank()
     }
 
-    Column {
+    Column (
+        Modifier
+            .fillMaxSize()
+            .padding(innerPadding)
+            .background(Color.White)
+    ){
         TopBar(navController)
         Box(
             modifier = Modifier
                 .weight(1f)
                 .fillMaxWidth()
-                .background(Color.White)
         ) {
             if (state.isLoading) {
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
@@ -67,7 +78,10 @@ fun RankScreen(navController: NavController, viewModel: RankViewModel = hiltView
 @Composable
 fun RankingContent(rankingList: List<RankResponse>) {
     if (rankingList.isEmpty()) {
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
             Text("No ranking data available.")
         }
         return
@@ -159,7 +173,6 @@ fun TopCard(toplist: List<RankResponse>) {
 fun BottomCard(bottomlist: List<RankResponse>) {
     Column(
         Modifier
-            .padding(horizontal = 32.dp)
             .shadow(3.dp, RoundedCornerShape(12.dp))
             .background(Color.White)
             .fillMaxWidth()

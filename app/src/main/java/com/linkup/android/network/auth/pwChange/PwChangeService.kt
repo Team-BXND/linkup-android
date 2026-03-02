@@ -7,13 +7,13 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface PwChangeService {
-    @POST(LinkUpUrl.Auth.send)
+    @POST(LinkUpUrl.Auth.SEND)
     suspend fun send(@Body request: SendRequest): Response<BaseResponse<PwChangeResponse>>
 
-    @POST(LinkUpUrl.Auth.verify)
+    @POST(LinkUpUrl.Auth.VERIFY)
     suspend fun verify(@Body request: VerifyRequest): Response<BaseResponse<PwChangeResponse>>
 
-    @POST(LinkUpUrl.Auth.change)
+    @POST(LinkUpUrl.Auth.CHANGE)
     suspend fun pwChange(@Body request: PwChangeRequest): Response<BaseResponse<PwChangeResponse>>
 }
 
