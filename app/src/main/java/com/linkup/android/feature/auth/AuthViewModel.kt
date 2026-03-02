@@ -1,15 +1,14 @@
 package com.linkup.android.feature.auth
 
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.linkup.android.data.datastore.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jakarta.inject.Inject
 import kotlinx.coroutines.launch
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
+import javax.inject.Inject
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
@@ -21,7 +20,7 @@ class AuthViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            userRepository.getAccessTokenSnapshot()
+            userRepository.loadAccessToken()
             isLoggedIn = userRepository.getCachedAccessToken() != null
         }
     }

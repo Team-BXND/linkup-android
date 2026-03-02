@@ -5,15 +5,12 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -27,24 +24,25 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.linkup.android.R
 import com.linkup.android.network.rank.RankResponse
 import com.linkup.android.ui.components.TopBar
 import com.linkup.android.ui.theme.MainColor
 
 @Composable
-fun RankScreen(navController: NavController,innerpadding: PaddingValues , viewModel: RankViewModel = hiltViewModel()) {
+fun RankScreen(navController: NavController, viewModel: RankViewModel = hiltViewModel()) {
     val state = viewModel.state.value
 
     LaunchedEffect(Unit) {
         viewModel.getRank()
     }
 
-    Column (Modifier.fillMaxSize()){
+    Column {
         TopBar(navController)
         Box(
             modifier = Modifier
@@ -159,21 +157,21 @@ fun TopCard(toplist: List<RankResponse>) {
 
 @Composable
 fun BottomCard(bottomlist: List<RankResponse>) {
-    LazyColumn(
+    Column(
         Modifier
             .padding(horizontal = 32.dp)
             .shadow(3.dp, RoundedCornerShape(12.dp))
             .background(Color.White)
             .fillMaxWidth()
     ) {
-        items(bottomlist) { item ->
+        bottomlist.forEachIndexed { index, item ->
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 16.dp).padding(top = 8.dp),
                 horizontalArrangement = Arrangement.Start
             ) {
-                Text("${item.rank}등", Modifier.padding(3.dp), color = MainColor, fontWeight = FontWeight.SemiBold, fontSize = 16.sp)
+                Text("${index + 4}등", Modifier.padding(3.dp), color = MainColor, fontWeight = FontWeight.SemiBold, fontSize = 16.sp)
                 Text(item.username, Modifier.padding(3.dp), color = Color.Black, fontWeight = FontWeight.Bold, fontSize = 20.sp)
                 Text("${item.point}P", Modifier.padding(5.dp), color = Color.Black, fontWeight = FontWeight.Medium, fontSize = 17.sp)
             }
@@ -181,4 +179,15 @@ fun BottomCard(bottomlist: List<RankResponse>) {
     }
 }
 
-
+@Preview(showBackground = true)
+@Composable
+fun RankingPreview() {
+    val dummyData = listOf(
+        RankResponse(username = "Alice", point = 1200, rank = 1),
+        RankResponse(username = "Bob", point = 1100, rank = 2),
+        RankResponse(username = "Charlie", point = 1000, rank = 3),
+        RankResponse(username = "Dave", point = 900, rank = 4),
+        RankResponse(username = "Eve", point = 800, rank = 5)
+    )
+    RankingContent(dummyData)
+}

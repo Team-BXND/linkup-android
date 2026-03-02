@@ -81,7 +81,7 @@ fun AppNavGraph(navController: NavHostController) {
             composable(NavGroup.SIGNUP) { SignUpScreen(navController) }
             composable(NavGroup.SEND) { PwChangeScreen(navController) }
             composable(NavGroup.SPLASH) { SplashScreen(navController) }
-            composable(NavGroup.RANK) { RankScreen(navController, innerpadding = innerPadding) }
+            composable(NavGroup.RANK) { RankScreen(navController) }
             composable(NavGroup.PROFILE) { ProfileScreen(navController) }
             composable(NavGroup.HOME) { HomeScreen(navController, innerPadding = innerPadding) }
             composable(NavGroup.MOVETOAUTH) { MoveToAuthScreen(navController)}
