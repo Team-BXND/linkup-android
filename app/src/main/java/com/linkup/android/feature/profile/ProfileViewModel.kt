@@ -56,7 +56,7 @@ class ProfileViewModel @Inject constructor(
 
         viewModelScope.launch {
             _state.value = _state.value.copy(isLoading = true, error = null)
-            val pageToFetch = if (initialFetch) 1 else state.value.answersPage
+            val pageToFetch = if (initialFetch) 0 else state.value.answersPage
 
             try {
                 val response = profileService.getMyAnswers(pageToFetch)
@@ -83,7 +83,7 @@ class ProfileViewModel @Inject constructor(
 
         viewModelScope.launch {
             _state.value = _state.value.copy(isLoading = true, error = null)
-            val pageToFetch = if (initialFetch) 1 else state.value.questionsPage
+            val pageToFetch = if (initialFetch) 0 else state.value.questionsPage
 
             try {
                 val response = profileService.getMyQuestions(pageToFetch)
