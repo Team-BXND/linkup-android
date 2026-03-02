@@ -17,6 +17,7 @@ import com.linkup.android.feature.post.PostDetailScreen
 import com.linkup.android.feature.qna.QnaScreen
 import com.linkup.android.feature.profile.ActivityType
 import com.linkup.android.feature.profile.MoveToAuthScreen
+import com.linkup.android.feature.profile.ProfileScreen
 import com.linkup.android.feature.profile.UserActivityScreen
 import com.linkup.android.feature.rank.RankScreen
 import com.linkup.android.feature.splash.SplashScreen
@@ -137,11 +138,15 @@ fun AppNavGraph(
             }
 
             composable(NavGroup.RANK) {
-                RankScreen(navController, innerPadding)
+                RankScreen(navController, innerPadding = innerPadding)
             }
 
             composable(NavGroup.WRITE) {
                 WriteScreen(navController, innerPadding)
+            }
+
+            composable (NavGroup.PROFILE) {
+                ProfileScreen(navController)
             }
 
             composable(NavGroup.MOVETOAUTH) {
@@ -185,7 +190,7 @@ fun AppNavGraph(
             ) { backStackEntry ->
                 val typeString = backStackEntry.arguments?.getString(NavGroup.ACTIVITY_TYPE).orEmpty()
                 val activityType = ActivityType.valueOf(typeString)
-                UserActivityScreen(activityType = activityType, navController = navController)
+                UserActivityScreen(activityType = activityType, navController = navController, innerPadding = innerPadding)
             }
 
             composable(

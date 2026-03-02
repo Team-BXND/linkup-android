@@ -1,7 +1,9 @@
 package com.linkup.android.feature.profile
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -37,7 +39,7 @@ enum class ActivityType(val rawValue: String) {
 }
 
 @Composable
-fun UserActivityScreen(navController: NavController, activityType: ActivityType, viewModel: ProfileViewModel = hiltViewModel()) {
+fun UserActivityScreen(navController: NavController, activityType: ActivityType, viewModel: ProfileViewModel = hiltViewModel(), innerPadding: PaddingValues) {
 
     LaunchedEffect(activityType) {
         when (activityType) {
@@ -47,7 +49,9 @@ fun UserActivityScreen(navController: NavController, activityType: ActivityType,
     }
 
     val state = viewModel.state.value
-    Column() {
+    Column(
+        modifier = Modifier.fillMaxSize().padding(innerPadding).background(Color.White)
+    ) {
         TopBar(navController = navController)
     Card(
         modifier = Modifier.fillMaxSize().padding(16.dp),
