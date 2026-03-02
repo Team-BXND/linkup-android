@@ -80,7 +80,7 @@ fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel = hi
                             Button(
                                 onClick = {
                                     authViewModel.logout()
-                                    navController.navigate(NavGroup.SIGNIN) {
+                                    navController.navigate(NavGroup.HOME) {
                                         popUpTo(NavGroup.PROFILE) { inclusive = true }
                                     }
                                 },
