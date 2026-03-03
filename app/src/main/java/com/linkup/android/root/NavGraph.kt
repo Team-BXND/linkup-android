@@ -2,12 +2,14 @@ package com.linkup.android.root
 
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.navArgument
+import com.linkup.android.feature.auth.AuthViewModel
 import com.linkup.android.feature.auth.pwchange.ChangePwScreen
 import com.linkup.android.feature.auth.pwchange.VerifyScreen
 import com.linkup.android.feature.auth.signin.SignInScreen
@@ -79,6 +81,7 @@ fun AppNavGraph(
     navController: NavHostController,
     startDestination: String
 ) {
+    val authViewModel: AuthViewModel = hiltViewModel()
 
     val navBackStackEntry = navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry.value?.destination?.route
@@ -96,7 +99,10 @@ fun AppNavGraph(
     Scaffold(
         bottomBar = {
             if (currentRoute in bottomBarRoutes) {
-                BottomBar(navController)
+                BottomBar(
+                    navController = navController,
+                    authViewModel = authViewModel
+                )
             }
         }
     ) { innerPadding ->
@@ -111,7 +117,10 @@ fun AppNavGraph(
             }
 
             composable(NavGroup.SIGNIN) {
-                SignInScreen(navController)
+                SignInScreen(
+                    navController = navController,
+                    authViewModel = authViewModel
+                )
             }
 
             composable(NavGroup.SIGNUP) {
@@ -146,7 +155,10 @@ fun AppNavGraph(
             }
 
             composable (NavGroup.PROFILE) {
-                ProfileScreen(navController)
+                ProfileScreen(
+                    navController = navController,
+                    authViewModel = authViewModel
+                )
             }
 
             composable(NavGroup.MOVETOAUTH) {

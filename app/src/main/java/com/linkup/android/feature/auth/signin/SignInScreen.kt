@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.linkup.android.feature.auth.AuthViewModel
 import com.linkup.android.root.NavGroup
 import com.linkup.android.ui.components.AuthLogo
 import com.linkup.android.ui.components.CustomButton
@@ -27,7 +28,10 @@ import com.linkup.android.ui.components.CustomTextField
 import com.linkup.android.ui.theme.SubColor
 
 @Composable
-fun SignInScreen(navController: NavController) {
+fun SignInScreen(
+    navController: NavController,
+    authViewModel: AuthViewModel
+) {
 
     val viewModel: SignInViewModel = hiltViewModel()
     val uiState = viewModel.uiState
@@ -40,6 +44,7 @@ fun SignInScreen(navController: NavController) {
 
     LaunchedEffect(uiState.isSuccess) {
         if (uiState.isSuccess) {
+            authViewModel.updateLoginState()
             navController.navigate(NavGroup.HOME) {
                 popUpTo(NavGroup.SIGNIN) { inclusive = true }
             }
