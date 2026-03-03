@@ -142,7 +142,8 @@ fun AppNavGraph(
                 QnaScreen(
                     navController = navController,
                     innerPadding = innerPadding,
-                    initialCategory = Category.ALL
+                    initialCategory = Category.ALL,
+                    authViewModel
                 )
             }
 
@@ -220,7 +221,8 @@ fun AppNavGraph(
                 QnaScreen(
                     navController = navController,
                     innerPadding = innerPadding,
-                    initialCategory = category
+                    initialCategory = category,
+                    authViewModel
                 )
             }
 

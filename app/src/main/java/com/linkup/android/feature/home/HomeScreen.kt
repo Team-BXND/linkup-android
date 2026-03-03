@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.linkup.android.feature.auth.AuthViewModel
 import com.linkup.android.ui.components.HomeQna
 import com.linkup.android.ui.components.ImagePager
 import com.linkup.android.ui.components.TopBar

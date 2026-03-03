@@ -22,6 +22,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.linkup.android.root.NavGroup
 import com.linkup.android.ui.components.AuthLogo
+import com.linkup.android.ui.components.AuthTopBar
 import com.linkup.android.ui.components.CustomButton
 import com.linkup.android.ui.components.CustomTextField
 import com.linkup.android.ui.theme.SubColor
@@ -61,7 +62,8 @@ fun ChangePwScreen(navController: NavController) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        AuthLogo("비밀번호 찾기")
+
+        AuthTopBar(navController)
 
         Column(
             modifier = Modifier.padding(top = 64.dp),

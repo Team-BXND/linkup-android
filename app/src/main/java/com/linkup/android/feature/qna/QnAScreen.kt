@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.linkup.android.feature.auth.AuthViewModel
 import com.linkup.android.feature.home.HomeViewModel
 import com.linkup.android.network.Category
 import com.linkup.android.root.NavGroup
@@ -52,9 +53,12 @@ fun QnaScreen(
     navController: NavController,
     innerPadding: PaddingValues,
     initialCategory: Category = Category.ALL,
+    authViewModel: AuthViewModel
 ) {
 
     val viewModel: HomeViewModel = hiltViewModel()
+
+    val isLoggedIn = authViewModel?.isLoggedIn
 
     var selectedTab by remember(initialCategory) {
         mutableStateOf(
@@ -146,21 +150,23 @@ fun QnaScreen(
             }
         }
 
-        FloatingActionButton(
-            onClick = {
-                navController.navigate(NavGroup.WRITE)
-            },
-            containerColor = MainColor,
-            shape = CircleShape,
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(12.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Rounded.Add,
-                contentDescription = "글쓰기",
-                tint = Color.White
-            )
+        if (isLoggedIn == true) {
+            FloatingActionButton(
+                onClick = {
+                    navController.navigate(NavGroup.WRITE)
+                },
+                containerColor = MainColor,
+                shape = CircleShape,
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(12.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Rounded.Add,
+                    contentDescription = "글쓰기",
+                    tint = Color.White
+                )
+            }
         }
     }
 }

@@ -23,6 +23,7 @@ import androidx.navigation.NavController
 import com.linkup.android.feature.auth.PasswordValidator
 import com.linkup.android.root.NavGroup
 import com.linkup.android.ui.components.AuthLogo
+import com.linkup.android.ui.components.AuthTopBar
 import com.linkup.android.ui.components.CustomButton
 import com.linkup.android.ui.components.CustomTextField
 import com.linkup.android.ui.theme.SubColor
@@ -90,116 +91,124 @@ fun SignUpScreen(navController: NavController) {
 
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White)
+        modifier = Modifier.fillMaxSize().background(Color.White)
+            .padding(top = 30.dp)
             .padding(horizontal = 32.5.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        verticalArrangement = Arrangement.Top
     ) {
-        AuthLogo("회원가입")
+        AuthTopBar(navController)
         Column(
-            modifier = Modifier.padding(top = 64.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            CustomTextField(
-                value = email,
-                onValueChange = {
-                    email = it
-                    viewModel.clearEmailError()
-                }, placeHolder = "이메일을 입력하세요."
-            )
-
-            if (showEmailError) {
-                Text(
-                    text = uiState.emailError ?: "이메일 형식이 맞지 않습니다.",
-                    color = Color.Red,
-                    fontSize = 14.sp
-                )
-            }
-
-            CustomTextField(
-                value = nickName,
-                onValueChange = {
-                    nickName = it
-                    viewModel.clearNickNameError()
-                }, placeHolder = "닉네임을 입력하세요."
-            )
-
-
-            if (uiState.nickNameError != null) {
-                Text(
-                    text = uiState.nickNameError,
-                    color = Color.Red,
-                    fontSize = 14.sp
-                )
-            }
-
-
-            CustomTextField(
-                value = pw,
-                onValueChange = {
-                    pw = it
-                    pwCheck = ""
-                    isPwCheckTouched = false
-                }, placeHolder = "비밀번호를 입력하세요.",
-                isPassword = true
-            )
-
-            if (isPwError) {
-                Text(
-                    text = "비밀번호는 8자 이상의 소문자, 숫자, 특수문자로 이루어져야 합니다.",
-                    color = Color.Red,
-                    fontSize = 14.sp
-                )
-            }
-
-
-            CustomTextField(
-                value = pwCheck,
-                onValueChange = {
-                    pwCheck = it
-                    isPwCheckTouched = true
-                }, placeHolder = "비밀번호를 다시 입력하세요.",
-                isPassword = true
-            )
-
-            if (isPwCheckError) {
-                Text(
-                    text = "비밀번호가 일치하지 않습니다.", color = Color.Red, fontSize = 14.sp
-                )
-            }
-
-        }
-
-        Column(
-            modifier = Modifier.padding(top = 32.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.White),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            CustomButton(
-                text = "회원가입",
-                contentColor = Color.White,
-                containerColor = SubColor,
-                border = SubColor,
-                enabled = isSignUpEnabled,
-                onClick = {
-                    viewModel.signUp(
-                        email = email,
-                        username = nickName,
-                        password = pw
+            AuthLogo("회원가입")
+            Column(
+                modifier = Modifier.padding(top = 64.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                CustomTextField(
+                    value = email,
+                    onValueChange = {
+                        email = it
+                        viewModel.clearEmailError()
+                    }, placeHolder = "이메일을 입력하세요."
+                )
+
+                if (showEmailError) {
+                    Text(
+                        text = uiState.emailError ?: "이메일 형식이 맞지 않습니다.",
+                        color = Color.Red,
+                        fontSize = 14.sp
                     )
                 }
-            )
 
-            CustomButton(
-                text = "로그인",
-                contentColor = SubColor,
-                containerColor = Color.White,
-                border = SubColor,
-                onClick = { navController.navigate(NavGroup.SIGNIN) },
-                modifier = Modifier
-            )
+                CustomTextField(
+                    value = nickName,
+                    onValueChange = {
+                        nickName = it
+                        viewModel.clearNickNameError()
+                    }, placeHolder = "닉네임을 입력하세요."
+                )
+
+
+                if (uiState.nickNameError != null) {
+                    Text(
+                        text = uiState.nickNameError,
+                        color = Color.Red,
+                        fontSize = 14.sp
+                    )
+                }
+
+
+                CustomTextField(
+                    value = pw,
+                    onValueChange = {
+                        pw = it
+                        pwCheck = ""
+                        isPwCheckTouched = false
+                    }, placeHolder = "비밀번호를 입력하세요.",
+                    isPassword = true
+                )
+
+                if (isPwError) {
+                    Text(
+                        text = "비밀번호는 8자 이상의 소문자, 숫자, 특수문자로 이루어져야 합니다.",
+                        color = Color.Red,
+                        fontSize = 14.sp
+                    )
+                }
+
+
+                CustomTextField(
+                    value = pwCheck,
+                    onValueChange = {
+                        pwCheck = it
+                        isPwCheckTouched = true
+                    }, placeHolder = "비밀번호를 다시 입력하세요.",
+                    isPassword = true
+                )
+
+                if (isPwCheckError) {
+                    Text(
+                        text = "비밀번호가 일치하지 않습니다.", color = Color.Red, fontSize = 14.sp
+                    )
+                }
+
+            }
+
+            Column(
+                modifier = Modifier.padding(top = 32.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+
+                CustomButton(
+                    text = "회원가입",
+                    contentColor = Color.White,
+                    containerColor = SubColor,
+                    border = SubColor,
+                    enabled = isSignUpEnabled,
+                    onClick = {
+                        viewModel.signUp(
+                            email = email,
+                            username = nickName,
+                            password = pw
+                        )
+                    }
+                )
+
+                CustomButton(
+                    text = "로그인",
+                    contentColor = SubColor,
+                    containerColor = Color.White,
+                    border = SubColor,
+                    onClick = { navController.navigate(NavGroup.SIGNIN) },
+                    modifier = Modifier
+                )
+            }
         }
     }
 }
