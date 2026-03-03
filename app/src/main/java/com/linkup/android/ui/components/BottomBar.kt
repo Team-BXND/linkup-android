@@ -23,12 +23,12 @@ import com.linkup.android.root.NavGroup
 @Composable
 fun BottomBar(
     navController: NavController,
-    authViewModel: AuthViewModel
+    authViewModel: AuthViewModel? = null
 ) {
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
-    val isLoggedIn = authViewModel.isLoggedIn
+    val isLoggedIn = authViewModel?.isLoggedIn
 
     NavigationBar(
         modifier = Modifier
@@ -84,7 +84,7 @@ fun BottomBar(
         NavigationBarItem(
             selected = currentRoute == NavGroup.PROFILE,
             onClick = {
-                if (isLoggedIn) {
+                if (isLoggedIn == true) {
                     navController.navigate(NavGroup.PROFILE) {
                         popUpTo(navController.graph.startDestinationId)
                         launchSingleTop = true

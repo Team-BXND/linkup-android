@@ -94,6 +94,7 @@ fun ProfileScreen(
                             Button(
                                 onClick = {
                                     authViewModel.logout()
+                                    navController.navigate(NavGroup.HOME)
                                 },
                                 shape = RoundedCornerShape(10.dp),
                                 colors = ButtonDefaults.buttonColors(containerColor = SubColor),
