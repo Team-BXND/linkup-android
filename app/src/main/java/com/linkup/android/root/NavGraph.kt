@@ -198,6 +198,25 @@ fun AppNavGraph(
             }
 
             composable(
+                route = NavGroup.ChangePw.ROUTE_WITH_ARG,
+                arguments = listOf(
+                    navArgument(NavGroup.EMAIL) {
+                        type = NavType.StringType
+                    }
+                )
+            ) { backStackEntry ->
+
+                val email = backStackEntry.arguments
+                    ?.getString(NavGroup.EMAIL)
+                    .orEmpty()
+
+                ChangePwScreen(
+                    navController = navController,
+                    email = email
+                )
+            }
+
+            composable(
                 route = NavGroup.UserActivity.ROUTE_WITH_ARG,
                 arguments = listOf(navArgument(NavGroup.ACTIVITY_TYPE) { type = NavType.StringType })
             ) { backStackEntry ->
