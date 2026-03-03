@@ -25,6 +25,7 @@ import com.linkup.android.ui.theme.MainColor
 fun TopBar(navController: NavController) {
     Row(
         modifier = Modifier
+            .padding(top = 50.dp)
             .fillMaxWidth()
             .height(53.dp)
             .clickable(
