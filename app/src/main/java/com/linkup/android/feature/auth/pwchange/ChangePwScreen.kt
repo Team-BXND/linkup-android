@@ -24,6 +24,7 @@ import androidx.navigation.NavController
 import com.linkup.android.feature.auth.PasswordValidator
 import com.linkup.android.root.NavGroup
 import com.linkup.android.ui.components.AuthLogo
+import com.linkup.android.ui.components.AuthTopBar
 import com.linkup.android.ui.components.CustomButton
 import com.linkup.android.ui.components.CustomTextField
 import com.linkup.android.ui.theme.SubColor
@@ -64,8 +65,8 @@ fun ChangePwScreen(navController: NavController, email: String) {
 
     LaunchedEffect(uiState.step) {
         if (uiState.step == ChangePwStep.PASSWORD_CHANGED) {
-            navController.navigate(NavGroup.SIGNIN){
-                popUpTo(0) {inclusive = true}
+            navController.navigate(NavGroup.SIGNIN) {
+                popUpTo(0) { inclusive = true }
             }
         }
     }
@@ -74,69 +75,78 @@ fun ChangePwScreen(navController: NavController, email: String) {
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
+            .padding(top = 30.dp)
             .padding(horizontal = 32.5.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        verticalArrangement = Arrangement.Top
     ) {
-        AuthLogo(text = "비밀번호 찾기")
+        AuthTopBar(navController)
 
         Column(
             modifier = Modifier
-                .padding(top = 64.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+                .fillMaxSize()
+                .background(Color.White),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            CustomTextField(
-                value = pw,
-                onValueChange = {
-                    pw = it
-                    pwCheck = ""
-                    isPwCheckTouched = false
-                }, placeHolder = "새 비밀번호를 입력하세요.",
-                isPassword = true
-            )
+            AuthLogo(text = "비밀번호 찾기")
 
-            if (isPwError) {
-                Text(
-                    text = "비밀번호는 8자 이상의 소문자, 숫자, 특수문자로 이루어져야 합니다.",
-                    color = Color.Red,
-                    fontSize = 14.sp
+            Column(
+                modifier = Modifier
+                    .padding(top = 64.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                CustomTextField(
+                    value = pw,
+                    onValueChange = {
+                        pw = it
+                        pwCheck = ""
+                        isPwCheckTouched = false
+                    }, placeHolder = "새 비밀번호를 입력하세요.",
+                    isPassword = true
                 )
-            }
 
-
-            CustomTextField(
-                value = pwCheck,
-                onValueChange = {
-                    pwCheck = it
-                    isPwCheckTouched = true
-                }, placeHolder = "새 비밀번호를 다시 입력하세요.",
-                isPassword = true
-            )
-
-            if (isPwCheckError) {
-                Text(
-                    text = "비밀번호가 일치하지 않습니다.", color = Color.Red, fontSize = 14.sp
-                )
-            }
-        }
-
-        Column(
-            modifier = Modifier
-                .padding(top = 32.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-
-            CustomButton(
-                text = "비밀번호 변경",
-                contentColor = Color.White,
-                containerColor = SubColor,
-                border = SubColor,
-                enabled = isButtonEnabled,
-                onClick = {
-                    viewModel.changePassword(email,pw)
+                if (isPwError) {
+                    Text(
+                        text = "비밀번호는 8자 이상의 소문자, 숫자, 특수문자로 이루어져야 합니다.",
+                        color = Color.Red,
+                        fontSize = 14.sp
+                    )
                 }
-            )
-        }
 
+
+                CustomTextField(
+                    value = pwCheck,
+                    onValueChange = {
+                        pwCheck = it
+                        isPwCheckTouched = true
+                    }, placeHolder = "새 비밀번호를 다시 입력하세요.",
+                    isPassword = true
+                )
+
+                if (isPwCheckError) {
+                    Text(
+                        text = "비밀번호가 일치하지 않습니다.", color = Color.Red, fontSize = 14.sp
+                    )
+                }
+            }
+
+            Column(
+                modifier = Modifier
+                    .padding(top = 32.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+
+                CustomButton(
+                    text = "비밀번호 변경",
+                    contentColor = Color.White,
+                    containerColor = SubColor,
+                    border = SubColor,
+                    enabled = isButtonEnabled,
+                    onClick = {
+                        viewModel.changePassword(email, pw)
+                    }
+                )
+            }
+        }
     }
 }

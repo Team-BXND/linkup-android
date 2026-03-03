@@ -23,6 +23,7 @@ import androidx.navigation.NavController
 import com.linkup.android.feature.auth.AuthViewModel
 import com.linkup.android.root.NavGroup
 import com.linkup.android.ui.components.AuthLogo
+import com.linkup.android.ui.components.AuthTopBar
 import com.linkup.android.ui.components.CustomButton
 import com.linkup.android.ui.components.CustomTextField
 import com.linkup.android.ui.theme.SubColor
@@ -52,80 +53,88 @@ fun SignInScreen(
     }
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White)
+        modifier = Modifier.fillMaxSize().background(Color.White)
+            .padding(top = 30.dp)
             .padding(horizontal = 32.5.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        verticalArrangement = Arrangement.Top
     ) {
-        AuthLogo("로그인")
-
+        AuthTopBar(navController)
         Column(
             modifier = Modifier
-                .padding(top = 64.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+                .fillMaxSize()
+                .background(Color.White),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            CustomTextField(
-                value = email,
-                onValueChange = { email = it },
-                placeHolder = "이메일을 입력하세요."
 
-            )
+            AuthLogo("로그인")
 
-            CustomTextField(
-                value = pw,
-                onValueChange = { pw = it },
-                placeHolder = "비밀번호를 입력하세요.",
-                isPassword = true
+            Column(
+                modifier = Modifier
+                    .padding(top = 64.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                CustomTextField(
+                    value = email,
+                    onValueChange = { email = it },
+                    placeHolder = "이메일을 입력하세요."
 
-            )
+                )
 
-            if (errorMessage != null) {
+                CustomTextField(
+                    value = pw,
+                    onValueChange = { pw = it },
+                    placeHolder = "비밀번호를 입력하세요.",
+                    isPassword = true
+
+                )
+
+                if (errorMessage != null) {
+                    Text(
+                        text = errorMessage,
+                        color = Color.Red,
+                        fontSize = 14.sp
+                    )
+                }
+
                 Text(
-                    text = errorMessage,
-                    color = Color.Red,
-                    fontSize = 14.sp
+                    text = "비밀번호를 잊으셨나요?",
+                    color = Color.Gray,
+                    fontSize = 12.sp,
+                    modifier = Modifier
+                        .align(alignment = Alignment.End)
+                        .clickable {
+                            navController.navigate(NavGroup.SEND)
+                        }
                 )
             }
 
-            Text(
-                text = "비밀번호를 잊으셨나요?",
-                color = Color.Gray,
-                fontSize = 12.sp,
+            Column(
                 modifier = Modifier
-                    .align(alignment = Alignment.End)
-                    .clickable {
-                        navController.navigate(NavGroup.SEND)
+                    .padding(top = 32.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+
+                CustomButton(
+                    text = "로그인 하기",
+                    contentColor = Color.White,
+                    containerColor = SubColor,
+                    border = SubColor,
+                    enabled = email.isNotBlank() && pw.isNotBlank(),
+                    onClick = {
+                        viewModel.signIn(email, pw)
                     }
-            )
-        }
+                )
 
-        Column(
-            modifier = Modifier
-                .padding(top = 32.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-
-            CustomButton(
-                text = "로그인 하기",
-                contentColor = Color.White,
-                containerColor = SubColor,
-                border = SubColor,
-                enabled = email.isNotBlank() && pw.isNotBlank(),
-                onClick = {
-                    viewModel.signIn(email,pw)
-                }
-            )
-
-            CustomButton(
-                text = "회원가입 하기",
-                contentColor = SubColor,
-                containerColor = Color.White,
-                border = SubColor,
-                onClick = { navController.navigate(NavGroup.SIGNUP) },
-                modifier = Modifier
-            )
+                CustomButton(
+                    text = "회원가입 하기",
+                    contentColor = SubColor,
+                    containerColor = Color.White,
+                    border = SubColor,
+                    onClick = { navController.navigate(NavGroup.SIGNUP) },
+                    modifier = Modifier
+                )
+            }
         }
     }
 }
