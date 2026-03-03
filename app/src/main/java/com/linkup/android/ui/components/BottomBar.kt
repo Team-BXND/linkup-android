@@ -1,6 +1,5 @@
 package com.linkup.android.ui.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.Icons
@@ -15,9 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.linkup.android.feature.auth.AuthViewModel
@@ -26,12 +23,12 @@ import com.linkup.android.root.NavGroup
 @Composable
 fun BottomBar(
     navController: NavController,
-    authViewModel: AuthViewModel = hiltViewModel()
+    authViewModel: AuthViewModel? = null
 ) {
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
-    val isLoggedIn = authViewModel.isLoggedIn
+    val isLoggedIn = authViewModel?.isLoggedIn
 
     NavigationBar(
         modifier = Modifier
@@ -87,7 +84,7 @@ fun BottomBar(
         NavigationBarItem(
             selected = currentRoute == NavGroup.PROFILE,
             onClick = {
-                if (isLoggedIn) {
+                if (isLoggedIn == true) {
                     navController.navigate(NavGroup.PROFILE) {
                         popUpTo(navController.graph.startDestinationId)
                         launchSingleTop = true

@@ -28,7 +28,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.linkup.android.R
 import com.linkup.android.feature.auth.AuthViewModel
@@ -38,11 +38,25 @@ import com.linkup.android.ui.theme.MainColor
 import com.linkup.android.ui.theme.SubColor
 
 @Composable
-fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel = hiltViewModel(), authViewModel: AuthViewModel = hiltViewModel()) {
+fun ProfileScreen(
+    navController: NavController,
+    authViewModel: AuthViewModel,
+    viewModel: ProfileViewModel = hiltViewModel()
+) {
     val state = viewModel.state.value
 
     LaunchedEffect(Unit) {
         viewModel.getProfile()
+    }
+
+    LaunchedEffect(state.error) {
+        // 401 Unauthorized 에러 (로그인 만료) 시 로그아웃 처리
+        if (state.error?.contains("401") == true || state.error?.contains("Unauthorized") == true) {
+            authViewModel.logout()
+            navController.navigate(NavGroup.HOME) {
+                popUpTo(NavGroup.PROFILE) { inclusive = true }
+            }
+        }
     }
 
     Column(
@@ -80,9 +94,7 @@ fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel = hi
                             Button(
                                 onClick = {
                                     authViewModel.logout()
-                                    navController.navigate(NavGroup.HOME) {
-                                        popUpTo(NavGroup.PROFILE) { inclusive = true }
-                                    }
+                                    navController.navigate(NavGroup.HOME)
                                 },
                                 shape = RoundedCornerShape(10.dp),
                                 colors = ButtonDefaults.buttonColors(containerColor = SubColor),
