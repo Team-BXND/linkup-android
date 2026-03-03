@@ -2,6 +2,7 @@ package com.linkup.android.feature.rank
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,7 +15,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -77,29 +80,24 @@ fun RankScreen(
 
 @Composable
 fun RankingContent(rankingList: List<RankResponse>) {
-    if (rankingList.isEmpty()) {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            Text("No ranking data available.")
-        }
-        return
-    }
 
     val top3 = rankingList.take(3)
     val rest = rankingList.drop(3)
 
-    Column(
-        Modifier
-            .fillMaxSize()
-            .padding(32.dp),
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(32.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        if (top3.isNotEmpty()) {
+
+        // ✅ TopCard
+        item {
             TopCard(top3)
         }
-        if (rest.isNotEmpty()) {
+
+        // ✅ BottomCard (리스트 전체)
+        item {
             BottomCard(rest)
         }
     }
@@ -116,7 +114,7 @@ fun TopCard(toplist: List<RankResponse>) {
             Modifier
                 .padding(horizontal = 32.dp)
                 .padding(top = 20.dp)
-                .padding(bottom = 12.dp),
+                .padding(bottom = 12.dp)
         ) {
             Text(
                 "🏆 답변자 랭킹",
@@ -175,7 +173,7 @@ fun BottomCard(bottomlist: List<RankResponse>) {
         Modifier
             .shadow(3.dp, RoundedCornerShape(12.dp))
             .background(Color.White)
-            .fillMaxWidth()
+            .fillMaxSize()
     ) {
         bottomlist.forEachIndexed { index, item ->
             Row(
